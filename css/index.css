@@ -1,0 +1,127 @@
+@CHARSET "UTF-8";
+body {
+    background: url(../images/metal.gif) repeat;
+    color: #000;
+    padding-bottom: 20px;
+}
+
+div.hide{
+	display:none;
+}
+
+div#logo{
+	width: 500px;
+	margin: 10px auto 0 auto;
+	font-size: 40px;
+}
+div#searchbox{
+	width: 400px;
+	margin: 0 auto 0 auto;
+	text-align: center;
+	padding: 30px 0 10px 0;
+	background: #dedede;
+	border: solid 5px #b0b0b0;
+	border-radius: 15px;	
+	box-shadow: 0 0 15px #5D5D5D inset;
+}
+div#toolbar{
+	margin:15px auto 0 auto;
+	text-align: center;
+
+}
+img.tools{
+	cursor:pointer;
+	margin: 0 5px 0 5px;
+}
+
+div#results{
+	width: 65%;
+	margin: 30px auto 0 auto;
+	text-align: center;
+	background: #dedede;
+	border: solid 5px #b0b0b0;
+	border-radius: 15px 15px 0 0;
+	align: center;
+	box-shadow: 0 0 15px #5D5D5D;
+}
+div#resultstitle{
+	font-size: 15px;
+	font-weight: bold;
+	background: #b0b0b0;
+	padding: 1% 0 1% 0;
+	text-align: center;
+}
+div#results_inner{
+	max-height: 350px;
+	overflow: auto;
+}
+div#noresults{
+	width: 200px;
+	text-align: center;
+	padding: 15px;
+	font-weight: bold;
+	margin: auto;
+}
+table#resultstable{
+	font-size: 12px;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+
+table#categoriestable{
+	font-size: 12px;
+	font-weight: bold;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+
+table#resultstable td, table#categoriestable td{
+	padding: 8px 8px 8px 30px;
+	background: #dedede;
+}
+table#resultstable tr:hover td, table#categoriestable tr:hover td{
+	background: #ebebeb;
+	color: red;
+	cursor:pointer;
+}
+form#addpartForm{
+	margin: 15px;
+}
+
+div#pinpopulate_list{
+	max-height: 340px;
+	overflow: auto;
+	padding: 20px;
+	text-align: center;
+}
+div#message{
+	width: 500px;
+	height: 60px;
+	margin: 10px auto 10px auto;
+	border: dashed 1px #b0b0b0;
+	font-size: 14px;
+	padding: 10px 5px 5px 0;
+	overflow: auto;	
+}
+/*popups*/
+#popup_header{
+	background: #dedede;
+	text-align: center;
+	padding: 10px;
+	overflow: hidden;
+}
+#popup_middle{
+	background: #ebebeb;
+	text-align: center;
+	max-height: 370px;
+	overflow: hidden;
+	padding:20px;
+}
+#popup_footer{
+	background: #dedede;
+	text-align: center;
+	padding: 10px;
+	height: 45px;
+}

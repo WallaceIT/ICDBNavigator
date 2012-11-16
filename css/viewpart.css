@@ -1,0 +1,278 @@
+@CHARSET "UTF-8";
+body {
+    background: url(../images/metal.gif) repeat;
+    color: #000;
+}
+
+/* utility classes */
+div.cAlign{
+	text-align: center;
+}
+
+div.hide{
+	display:none;
+}
+.OkButton{
+	margin-top: 10px;
+}
+
+/*popups*/
+#popup_header{
+	background: #dedede;
+	text-align: center;
+	padding: 10px;
+	overflow: hidden;
+}
+#popup_middle{
+	background: #ebebeb;
+	text-align: center;
+	max-height: 370px;
+	overflow: hidden;
+	padding:20px;
+}
+#popup_footer{
+	background: #dedede;
+	text-align: center;
+	padding: 10px;
+	height: 45px;
+}
+div#pinpopulate_list{
+	padding: 10px;
+	max-height: 300px;
+	overflow: auto;
+	text-align: center;
+}
+
+/* toolbar */
+div#toolbar{
+	width: 48px;
+	height: 98%;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	left: 0;
+	padding: 5px;
+	border-right: dashed 1px #b0b0b0;
+}
+
+img.toolbarobj{
+	max-width: 40px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+/* package */
+div#package{
+	width: 230px;
+	height: 100%;
+	float: left;
+	margin: 30px 0 0 70px;
+}
+
+div#pkgselect{
+	width: 230px;
+	position: absolute;
+	left: 70px;
+	top: 20px;
+	align:center;
+	text-align: center;
+}
+
+/* part name/ID */
+div#NAMEandID{
+	margin: 25px 0 20px 325px;
+	text-align: left;
+}
+
+img.manlogo{
+	height: 25px;
+	margin-left: 10px;
+}
+
+div#myNameandLogo{
+	font-size: 30px;
+}
+
+div#myID{
+	font-size: 13px;
+}
+
+/* appnotes box */
+div#appnotes {
+	height: auto;
+	width: auto;
+	margin: 25px 25px 0 320px;
+	padding: 0;
+	background: #dedede;
+	border: solid 5px #b0b0b0;
+	border-radius: 15px 15px 0 15px;
+	box-shadow: 3px 3px 10px #5D5D5D;
+}
+
+div#appnotestitle{
+	position: relative;
+	font-size: 15px;
+	font-weight:bold;
+	background: #b0b0b0;
+	padding: 10px 0 10px 0;
+	text-align: center;
+}
+
+img#appnoteplus{
+	position: absolute;
+	right: 60px;
+	top: 5px;
+	cursor:pointer;
+}
+
+img#appnoteminus{
+	position: absolute;
+	right: 20px;
+	top: 13px;
+	cursor:pointer;
+}
+
+div#appnotesdiv{
+	max-height: 110px;
+	overflow: auto;
+	border-radius: 0 0 0 15px;
+}
+
+table#appnotestable{
+	font-size: 14px;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+
+table#appnotestable td{
+	padding: 8px 8px 8px 30px;
+	background: #dedede;
+}
+
+table#appnotestable tr:hover td{
+	background: #ebebeb;
+	color: red;
+	cursor:pointer;
+}
+
+/* contents box */
+div#contents {
+	max-height: 400px;
+	width: auto;
+	margin: 15px 25px 0 320px;
+	padding: 0;
+	background: #dedede;
+	border: solid 5px #b0b0b0;
+	border-radius: 15px 15px 0 15px;
+	box-shadow: 3px 3px 10px #5D5D5D;
+}
+
+div#contents a{
+	color: #464646;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+img#editdesc{
+	cursor:pointer;
+}
+
+/* quantity box */
+div#qtybox{
+	width: 15%;
+	min-width: 180px;
+	height: 25px;
+	overflow: hidden;
+	position: absolute;
+	top: 20px;
+	right: 35px;
+	padding: 10px;
+	text-align: center;
+	background: #dedede;
+	border: solid 5px #b0b0b0;
+	border-radius: 15px;
+	box-shadow: 3px 3px 10px #5D5D5D;
+	z-index: 1;
+}
+
+div.qtyitem{
+	height: 45px;
+}
+
+input.qtyinput{
+	width: 25px;
+}
+
+/* search and results popup*/
+div#results{
+	margin: 20px 0 5px 0;
+	border: dashed 1px #b0b0b0;
+}
+div#resultstitle{
+	font-size: 15px;
+	font-weight: bold;
+	padding: 1% 0 1% 0;
+	text-align: center;
+}
+
+div#results_inner{
+	max-height: 300px;
+	overflow: auto;
+}
+
+div#noresults{
+	width: 200px;
+	text-align: center;
+	padding: 15px;
+	font-weight: bold;
+	margin: auto;
+}
+
+table#resultstable{
+	font-size: 12px;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+}
+
+table#resultstable td, table#categoriestable td{
+	padding: 8px 8px 8px 30px;
+	background: #dedede;
+}
+
+table#resultstable tr:hover td, table#categoriestable tr:hover td{
+	background: #ebebeb;
+	color: red;
+	cursor:pointer;
+}
+
+table#resultstable tr:hover td{
+	background: #ebebeb;
+	color: red;
+	cursor:pointer;
+}
+
+/* part .htm file */
+div.cmain_d{
+	font-size: 15px;
+	font-weight:bold;
+	background: #b0b0b0;
+	padding: 10px 0 10px 0;
+	text-align: center;
+	margin-top: 10px;
+}
+
+div.cmain_f{
+	padding: 10px 20px 20px 20px;
+	overflow: auto;
+	max-height: 280px;
+}
+
+/* TEST */
+div#package_test{
+	width: 230px;
+	height: 100%;
+	margin: 40px auto;
+	border: solid 1px red;
+}
