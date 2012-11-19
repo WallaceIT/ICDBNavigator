@@ -38,29 +38,29 @@
 					width: '600px',
 					height: '220px'				
 				});
+			});
 
-				$("#savepkgForm").live("submit", function(event) {
-					event.preventDefault();
-					var pkgName = $(this).find('input[name="pkgName"]').val();
-					var pkgPinsNum = $(this).find('select[name="pkgPinsNum"]').val();
-					var code = editor.getValue();
-					$.ajax({
-						type: "POST",
-						url: "pkgcreate.php",
-						data: {
-							name: pkgName,
-							pinsnum: pkgPinsNum,
-							code: code
-							},
-						dataType: "text",
-						success: function(response){
-							$.colorbox({
-								html: response,
-								width: '600px',
-								height: '220px'				
-							});
-						}
-					});
+			$("#savepkgForm").live("submit", function(event) {
+				event.preventDefault();
+				var pkgName = $(this).find('input[name="pkgName"]').val();
+				var pkgPinsNum = $(this).find('input[name="pkgPinsNum"]').val();
+				var code = editor.getValue();
+				$.ajax({
+					type: "POST",
+					url: "pkgcreate.php",
+					data: {
+						name: pkgName,
+						pinsnum: pkgPinsNum,
+						code: code
+						},
+					dataType: "text",
+					success: function(response){
+						$.colorbox({
+							html: response,
+							width: '600px',
+							height: '220px'				
+						});
+					}
 				});
 			});
 
