@@ -20,12 +20,6 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 			'stroke-width': 2
 		});
 	
-	var name = paper.text(80, ".$namepos.", partname)
-	.attr({fill: '#bfbfbf',
-	'font-size': ".$fontsize.",
-	'text-anchor' : 'middle'
-	});
-	
 	//pins
 	var pin = {};";
 	
@@ -56,14 +50,13 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	main.node.setAttribute('name','main');
 	
 	var pkgset = paper.set();
-	pkgset.push(body, name, notch, main);
+	pkgset.push(body, notch, main);
 	for (var pinnum in pin) {
 		pkgset.push(pin[pinnum]);
 	}
 	
 	pkgset.transform('s'+scalefactor+','+scalefactor+',115,0');
-	
-	name.transform('r270');
+
 }";
 	
 	file_put_contents($file, $file_data);

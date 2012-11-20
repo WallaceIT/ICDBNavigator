@@ -8,19 +8,13 @@ for ($j = 0; $j<count($pins); $j++){
 	$rectheight = $pins[$j]*10 +5;
 	$ypos = 300 - $rectheight/2;
 	
-	$namepos = $ypos + $rectheight/2;
-	$fontsize = $pins[$j] * 2;
+	$namepos = $ypos - 10 + $rectheight/2;
+	$fontsize = $pins[$j] * 2 - 5;
 	if ($fontsize > 40) $fontsize = 40;
 	$file_data = 
 "// ICDBN - package ".$pkgname."
 function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	var body = paper.rect(40,".$ypos.",150,".$rectheight.", 4).attr('fill', '#333');
-	
-	var name = paper.text(90, ".$namepos.", partname)
-	.attr({fill: '#bfbfbf',
-	'font-size': ".$fontsize.",
-	'text-anchor' : 'middle'
-	});
 	
 	//pins
 	var pin = {};";
@@ -52,14 +46,13 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	main.node.setAttribute('name','main');
 	
 	var pkgset = paper.set();
-	pkgset.push(body, name, main);
+	pkgset.push(body, main);
 	for (var pinnum in pin) {
 		pkgset.push(pin[pinnum]);
 	}
 	
 	pkgset.transform('s'+scalefactor+','+scalefactor+',115,0t0,0');
 	
-	name.transform('r270');
 }";
 	
 	file_put_contents($file, $file_data);

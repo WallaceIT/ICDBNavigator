@@ -27,12 +27,6 @@ for ($j = 0; $j<count($pins); $j++){
 function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	var body = paper.rect(".$pinlenght.",".$ypos.",".$bodyside.",".$bodyside.", 4).attr('fill', '#333');
 	
-	var name = paper.text(".$namexpos.", ".$nameypos.", partname)
-	.attr({fill: '#bfbfbf',
-	'font-size': ".$fontsize.",
-	'text-anchor': 'middle'
-	});
-	
 	//pins
 	var pin = {};";
 	//left pins
@@ -94,7 +88,7 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	main.node.setAttribute('name','main');
 	
 	var pkgset = paper.set();
-	pkgset.push(body, name, main);
+	pkgset.push(body, main);
 	for (var pinnum in pin) {
 		pkgset.push(pin[pinnum]);
 	}

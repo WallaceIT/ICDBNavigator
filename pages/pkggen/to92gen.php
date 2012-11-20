@@ -19,11 +19,6 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	var bodyC = paper.rect(".($xpos+15).",".$ypos.",150,".$bodyheight.", 0).attr('fill', '#333');
 	var bodyR = paper.rect(".($xpos+165).",".$ypos.",15,".$bodyheight.", 0).attr('fill', '#333');
 	
-	var name = paper.text(115, ".$namepos.", partname)
-	.attr({fill: '#bfbfbf',
-	'font-size': ".$fontsize."
-	});
-	
 	//pins
 	var pin = {};";
 	
@@ -42,7 +37,7 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	$file_data .= "
 	
 	var pkgset = paper.set();
-	pkgset.push(bodyL, bodyC, bodyR, name);
+	pkgset.push(bodyL, bodyC, bodyR);
 	for (var pinnum in pin) {
 		pkgset.push(pin[pinnum]);
 	}

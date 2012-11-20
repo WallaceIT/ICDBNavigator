@@ -28,11 +28,6 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	var hole = paper.circle(".($x+$bodywidth/2).", ".($y+$bodyheight/2).", 25).attr('fill', 'url(\"images/metal.gif\")');
 	var body = paper.rect(".$x.",".($y+$bodyheight).",".$bodywidth.",".$bodyheight.", 0).attr('fill', '#333');
 	
-	var name = paper.text(115, ".$namepos.", partname)
-	.attr({fill: '#bfbfbf',
-	'font-size': ".$fontsize."
-	});
-	
 	//pins
 	var pin = {};";
 	
@@ -51,7 +46,7 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	$file_data .= "
 	
 	var pkgset = paper.set();
-	pkgset.push(hsink, hole, body, name);
+	pkgset.push(hsink, hole, body);
 	for (var pinnum in pin) {
 		pkgset.push(pin[pinnum]);
 	}

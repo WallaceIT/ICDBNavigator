@@ -8,5 +8,6 @@ include 'ssopgen.php';
 include 'qfpgen.php';
 include 'to92gen.php';
 include 'to220gen.php';
+include 'sot23gen.php';
 include 'othergen.php';
 ?>
