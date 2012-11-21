@@ -89,6 +89,11 @@ img.manlogo{
 	margin-left: 10px;
 }
 
+span.manufacturerName{
+	font-size: 15px;
+	padding-left: 15px;
+}
+
 div#myNameandLogo{
 	font-size: 30px;
 }

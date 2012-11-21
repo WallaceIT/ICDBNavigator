@@ -1,5 +1,6 @@
 <?php
 if($_POST['action'] == 'backup'){
+	include('../data/config.php');
 	$zip = new ZipArchive();
 	date_default_timezone_set('Europe/Rome');
 	$date = date("Ymd_Gi");
@@ -9,7 +10,9 @@ if($_POST['action'] == 'backup'){
 	    exit("cannot open ../$filename");
 	}
 	
-	$zip->addFile("../data/icdb.sqlite", "data/icdb.sqlite");
+	if($_CONFIG_DB_USE_SQLITE) $zip -> addFile("../data/icdb.sqlite", "data/icdb.sqlite");
+	
+	$zip -> addFile("../data/config.php", "data/config.php");
 	
 	$handler = opendir("../data/pindescs");
 	while ($file = readdir($handler)) {
@@ -29,24 +32,8 @@ if($_POST['action'] == 'backup'){
 			$zip->addFile("../data/packages/".$file, "data/packages/".$file);
 	}
 	
-	if($_POST['includepdf'] == 1){
-	
-		$handler = opendir("../data/datasheets");
-		while ($file = readdir($handler)) {
-			if ($file != "." && $file != "..")
-				$zip->addFile("../data/datasheets/".$file, "data/datasheets/".$file);
-		}
-		
-		$handler = opendir("../data/appnotes");
-		while ($file = readdir($handler)) {
-			if ($file != "." && $file != "..")
-				$zip->addFile("../data/appnotes/".$file, "data/appnotes/".$file);
-		}
-	}
-	else {
-		$zip->addEmptyDir("data/datasheets");
-		$zip->addEmptyDir("data/appnotes");
-	}
+	$zip->addEmptyDir("data/datasheets");
+	$zip->addEmptyDir("data/appnotes");
 	
 	closedir($handler);
 	$zip->addFromString("backupinfo.txt", "ICDB Backup\n".$_SERVER['SERVER_NAME'].", ".date("d M Y - G:i"));
@@ -57,14 +44,14 @@ elseif ($_POST['action'] == 'select'){
 	?>
 	<div id="popup_header">
 		<br>
-		<b>PLEASE NOTE:</b> Restoring a backup file will replace ALL current data and files! 
+		<b>PLEASE NOTE:</b> Restoring a backup file will replace ALL current data and files!
 		<br><br>
-		<form action="pages/backup.php" method="post" enctype="multipart/form-data">
+		<form id="restorebackupForm" action="pages/backup.php" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
 			<input type="file" name="upfile">
-			<input type="hidden" name="MAX_FILE_SIZE" value="10000">
-			<input type="hidden" name="action" value="restore">
 			<br><br>
 			<input type="button" class="OkButton" value="Cancel">
+			<input type="hidden" name="action" value="restore">
+			<input type="hidden" name="MAX_FILE_SIZE" value="10000">
 			<input type="submit" value="Restore!">
 		</form>
 	</div>
@@ -89,11 +76,15 @@ elseif ($_POST['action'] == 'restore'){
 			rrmdir('../data/');
 			$zip->extractTo('..');
 			$zip->close();
-			header("location: http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']); 
+			header("location: ../index.html"); 
 			
 		}
 		else echo 'Backup restoring failed - can\'t open uploaded zip file! :(';
 	}
 
+}
+elseif ($_POST['action'] == 'delete'){
+	$filename = $_POST['deletebackupfile'];
+	if(file_exists("../".$filename)) unlink("../".$filename);
 }
 ?>

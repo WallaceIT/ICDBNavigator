@@ -574,7 +574,8 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			if($result = $db -> query($sqlquery)) $website = $result -> fetchColumn();
 			$logofile = 'data/logos/'.str_replace(' ', '', strtolower($row_part['manufacturer'])).'.gif';
 			if (file_exists($logofile) && isset($website)) echo '<a href="'.$website.'" target="_blank"><img src="'.$logofile.'" class="manlogo"/></a>';
-			elseif (file_exists($logofile)) echo '<img src="'.$logofile.'" class="manlogo"/>';
+			elseif (file_exists($logofile) && !isset($website)) echo '<img src="'.$logofile.'" class="manlogo"/>';
+			elseif (!file_exists($logofile) && isset($website)) echo '<a href="'.$website.'" target="_blank"><span class="manufacturerName">['.$row_part["manufacturer"].']</span></a>';
 			?>
 		</div>
 		<div id="myID">

@@ -11,15 +11,17 @@ if (!isset($_POST['action'])){?>
 	<hr>
 	<form action="#" id="addmanufacturerForm">
 		<input name="addmanufacturerName" type="text" size="38" placeholder="Add New Manufacturer..." required><br>
+		<?php if( class_exists("Imagick") ){?>
 		<input name="addmanufacturerLogoUrl" type="url" size="38" placeholder="Manufacturer Logo URL - white2transparent"><br>
+		<?php ;}?>
 		<input name="addmanufacturerWebsite" type="text" size="30" placeholder="Manufacturer's Website...">
 		<input type="submit" value="Add!"><br>
 	</form>
 	<hr>
 	Backup DB: <input type="button" id="backupButton" value="Backup">
 	<br>
-	<input type="checkbox" id="backupIncludepdf"> Include Datasheets and Application Notes files
-	<br><br>
+	<?php if(!$_CONFIG_DB_USE_SQLITE) echo '(<b>MySQL DB backup not yet supported!</b><br>)'; ?>
+	<br>
 	Restore DB backup: <input type="button" id="restoreselectButton" value="Restore">
 	<br><hr>
 	Package Generation Workbench: <input type="button" id="pkgWBButton" value="Go!">
@@ -109,9 +111,12 @@ if (!isset($_POST['action'])){?>
 			if($('#backuphref').attr('href') != ''){
 				$.ajax({
 					type: "POST",
-					data: {deletebackupfile : $('#backuphref').attr('href')},
+					data: {
+						action : 'delete',
+						deletebackupfile : $('#backuphref').attr('href')
+						},
 					dataType: "text",
-					url: "pages/delete_backup.php",
+					url: "pages/backup.php",
 					success: function(){
 						$.colorbox.close();
 					}
@@ -151,15 +156,17 @@ else if ($_POST['action'] == 'addmanufacturer') {
 			fclose($fc);
 		}
 		
-		$logo = new Imagick();		
-		$logo -> pingImage($filepath);
-		$logo -> readImage($filepath);
-		$logo -> resizeImage(0,100, imagick::FILTER_LANCZOS, 0.9);
-		$logo -> paintTransparentImage('rgb(255,255,255)', 0.0, 7000);
-		$logo -> setImageFormat( "gif" );
-		$logopath = $dirname.str_replace(' ', '', strtolower($_POST['manufacturername'])).'.gif';
-		$logo->writeImage( $logopath );
-		if($logo -> clear() && file_exists($filepath)) unlink($filepath);
+		if( class_exists("Imagick") ){	//Imagick is installed
+			$logo = new Imagick();		
+			$logo -> pingImage($filepath);
+			$logo -> readImage($filepath);
+			$logo -> resizeImage(0,100, imagick::FILTER_LANCZOS, 0.9);
+			$logo -> paintTransparentImage('rgb(255,255,255)', 0.0, 7000);
+			$logo -> setImageFormat( "gif" );
+			$logopath = $dirname.str_replace(' ', '', strtolower($_POST['manufacturername'])).'.gif';
+			$logo->writeImage( $logopath );
+			if($logo -> clear() && file_exists($filepath)) unlink($filepath);
+		}
 	};
 ?>
 New Manufacturer <b><?php echo $_POST['manufacturername']; ?></b> Added!
