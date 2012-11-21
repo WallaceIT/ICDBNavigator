@@ -2,6 +2,7 @@
 //sot23_3
 $file = $packagefolder."sot23_3.js";
 $pkgname = "sot23_3";
+$pinsnum = 3;
 $file_data = 
 '// ICDBN - package sot23_3
 function drawpkg_sot23_3(paper, partname, scalefactor){
@@ -37,15 +38,18 @@ file_put_contents($file, $file_data);
 $sqlquery = "SELECT COUNT(*) FROM packages WHERE pkgname = '".$pkgname."'";
 $st = $db -> query($sqlquery);
 if(!$st -> fetchColumn()){
-	$st = $db -> prepare("INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)";
+	else $sql = "INSERT INTO packages (pkgname, pinsnum) VALUES (?,?)";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $pkgname);
-	$st->bindParam(2, 3);
+	$st->bindParam(2, $pinsnum);
 	$st -> execute();
 }
 
 //sot23_5
 $file = $packagefolder."sot23_5.js";
 $pkgname = "sot23_5";
+$pinsnum = 5;
 $file_data =
 '// ICDBN - package sot23_5
 function drawpkg_sot23_5(paper, partname, scalefactor){
@@ -89,15 +93,18 @@ file_put_contents($file, $file_data);
 $sqlquery = "SELECT COUNT(*) FROM packages WHERE pkgname = '".$pkgname."'";
 $st = $db -> query($sqlquery);
 if(!$st -> fetchColumn()){
-	$st = $db -> prepare("INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)";
+	else $sql = "INSERT INTO packages (pkgname, pinsnum) VALUES (?,?)";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $pkgname);
-	$st->bindParam(2, 5);
+	$st->bindParam(2, $pinsnum);
 	$st -> execute();
 }
 
 //sot23_6
 $file = $packagefolder."sot23_6.js";
 $pkgname = "sot23_6";
+$pinsnum = 6;
 $file_data =
 '// ICDBN - package sot23_6
 function drawpkg_sot23_6(paper, partname, scalefactor){
@@ -145,9 +152,11 @@ file_put_contents($file, $file_data);
 $sqlquery = "SELECT COUNT(*) FROM packages WHERE pkgname = '".$pkgname."'";
 $st = $db -> query($sqlquery);
 if(!$st -> fetchColumn()){
-	$st = $db -> prepare("INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)";
+	else $sql = "INSERT INTO packages (pkgname, pinsnum) VALUES (?,?)";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $pkgname);
-	$st->bindParam(2, 6);
+	$st->bindParam(2, $pinsnum);
 	$st -> execute();
 }
 

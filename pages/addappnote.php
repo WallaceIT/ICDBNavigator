@@ -68,18 +68,24 @@ if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 			fclose($fc);
 		}
 	}
-	$st = $db -> prepare("INSERT INTO appnotes ('name','description', 'url') VALUES (?, ?, ?)");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO appnotes ('name','description', 'url') VALUES (?, ?, ?)";
+	else $sql = "INSERT INTO appnotes (name,description, url) VALUES (?, ?, ?)";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $_POST['name']);
 	$st->bindParam(2, $_POST['desc']);
 	$st->bindParam(3, $_POST['url']);
 	$st -> execute();
-	$st = $db -> prepare("UPDATE parts SET appnotes = appnotes || '@' || ? WHERE ID = ?");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "UPDATE parts SET appnotes = appnotes || '@' || ? WHERE ID = ?";
+	else $sql = "UPDATE parts SET appnotes = CONCAT(appnotes,'@',?) WHERE ID = ?";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $ID);
 	$st->bindParam(2, $_POST['partID']);
 	$st -> execute();
 		return true;
 } else if ($_POST['appnoteID'] != '') {
-	$st = $db -> prepare("UPDATE parts SET appnotes = appnotes || '@' || ? WHERE ID = ?");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "UPDATE parts SET appnotes = appnotes || '@' || ? WHERE ID = ?";
+	else $sql = "UPDATE parts SET appnotes = CONCAT(appnotes,'@',?) WHERE ID = ?";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $_POST['appnoteID']);
 	$st->bindParam(2, $_POST['partID']);
 	$st -> execute();

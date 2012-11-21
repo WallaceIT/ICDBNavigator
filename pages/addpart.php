@@ -30,9 +30,9 @@ if(!isset($_POST['addpartName'])){?>
 		<select name="addpartPackage" required>
 			<option value="" disabled="disabled"> Package... </option>
 			<?php 
-			$packages = $db -> query("SELECT * FROM packages ORDER BY pinsnum ASC");	
+			$packages = $db -> query("SELECT * FROM packages ORDER BY pkgname ASC");	
 			while ($row_packages = $packages -> fetch(PDO::FETCH_ASSOC)){
-				echo '<option value="'.$row_packages['pkgname'].'">'.$row_packages['pinsnum'].'pin - '.$row_packages['pkgname'].'</option>';
+				echo '<option value="'.$row_packages['pkgname'].'">'.$row_packages['pkgname'].'</option>';
 			};
 			?>
 			<option value="other">other...</option>
@@ -68,7 +68,8 @@ else{
 		}
 		$null = '';
 		$_POST['addpartQuantity'] ? $qty = $_POST['addpartQuantity'] : $qty = 0;
-		$st = $db -> prepare("INSERT INTO parts ('name','description','manufacturer','package','appnotes','category','quantity','datasheeturl','summary') VALUES (?,?,?,?,?,?,?,?,?)");
+		$sql = "INSERT INTO parts (name,description,manufacturer,package,appnotes,category,quantity,datasheeturl,summary) VALUES (?,?,?,?,?,?,?,?,?)";
+		$st = $db -> prepare($sql);
 		$st->bindParam(1, $_POST['addpartName']);
 		$st->bindParam(2, $_POST['addpartDescription']);
 		$st->bindParam(3, $_POST['addpartManufacturer']);

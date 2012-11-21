@@ -88,25 +88,21 @@ if(!isset($_POST['gosetup'])){?>
 <?php ;}
 else{
 	/*	SETUP:
-	 *  - creates data directory and all subdirectories
+	 *  - creates data directory
 	 *  - creates config.php file  
 	 *  - creates new database and setup it
+	 *  - create data subdirectories...
 	 *  - creates default packages
 	 *  - all DONE! :) 
 	 * 
 	 */
 
-	// creating data directories...
+	// creating data directory...
 	echo 'creating data directories...';
-	if(is_dir('data/pindescs')) exit(' data directories already exists, aborting!');
+	//if(is_dir('data/pindescs')) exit(' data directories already exists, aborting!');
 	if(!is_writable('.')) exit('ICDBN root not writable, please make manually a writable \'data\' directory into it and re-run this script!');
 	
 	if(!is_dir('data')) mkdir('data');
-	mkdir('data/appnotes');
-	mkdir('data/datasheets');
-	mkdir('data/logos');
-	mkdir('data/packages');
-	mkdir('data/pindescs');
 	
 	echo '[OK]<br><br>';
 	
@@ -116,14 +112,14 @@ else{
 	$file_contents .= "// path to ICDBNavigator root folder (in the filesystem)".PHP_EOL;
 	$file_contents .= '$_CONFIG_ICDB_ROOT = "'.$_POST['setupRootPath'].'";'.PHP_EOL;
 	$file_contents .= '// DB connection'.PHP_EOL;
-	if($_POST['setupDB_Type'] == 'sqlite') $file_contents .= '$db = new PDO("sqlite:$_CONFIG_ICDB_ROOT/data/icdb.sqlite");'.PHP_EOL;
+	if($_POST['setupDB_Type'] == 'sqlite') $file_contents .= '$db = new PDO("sqlite:$_CONFIG_ICDB_ROOT/data/icdb.sqlite");'.PHP_EOL.'$_CONFIG_DB_USE_SQLITE = TRUE;'.PHP_EOL;
 	elseif($_POST['setupDB_Type'] == 'mysql'){
-		$file_contents .= '$pdo = new PDO(
+		$file_contents .= '$db = new PDO(
 			\'mysql:host='.$_POST['setupDB_MySQLHost'].';dbname='.$_POST['setupDB_MySQLDBName'].'\',
 			\''.$_POST['setupDB_MySQLUser'].'\',
 			\''.$_POST['setupDB_MySQLPassword'].'\',
 			array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
-		);'.PHP_EOL.PHP_EOL;
+		);'.PHP_EOL.'$_CONFIG_DB_USE_SQLITE = FALSE;'.PHP_EOL;
 	}
 	$file_contents .= '// config'.PHP_EOL.PHP_EOL;
 	$file_contents .= '/* $_CONFIG_PDFDOWNLOAD: TRUE to download datasheets and appnotes and save their URLs in the DB, FALSE to only save URLs in the DB*/'.PHP_EOL;
@@ -140,30 +136,53 @@ else{
 	echo 'creating new database...';
 	include ('data/config.php');
 	
+	if(!$db) exit('<b>[FAILED!]</b>');
+	
 	// table 'appnotes'
-	$sql = 'CREATE TABLE "appnotes" ("ID" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "name" TEXT NOT NULL , "description" TEXT NOT NULL , "url" TEXT)';
+	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "appnotes" ("ID" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "name" TEXT NOT NULL , "description" TEXT NOT NULL , "url" TEXT)';
+	else $sql = 'CREATE TABLE appnotes (ID INTEGER PRIMARY KEY  AUTO_INCREMENT  NOT NULL  UNIQUE , name TEXT NOT NULL , description TEXT NOT NULL , url TEXT)';
 	$st = $db -> prepare($sql);
 	$st -> execute();
 	
 	// table 'categories'
-	$sql = 'CREATE TABLE "categories" ("category" TEXT NOT NULL  UNIQUE )';
+	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "categories" ("category" TEXT NOT NULL  UNIQUE )';
+	else $sql = 'CREATE TABLE categories (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, category TEXT NOT NULL)';
+	$st = $db -> prepare($sql);
+	$st -> execute();
+	$sql = "INSERT INTO categories (category) VALUES ('Miscellaneous')";
 	$st = $db -> prepare($sql);
 	$st -> execute();
 	
 	// table 'manufacturers'
-	$sql = 'CREATE TABLE "manufacturers" ("name" TEXT NOT NULL  UNIQUE , "website" TEXT)';
+	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "manufacturers" ("name" TEXT NOT NULL  UNIQUE , "website" TEXT)';
+	else $sql = 'CREATE TABLE manufacturers (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, name TEXT NOT NULL, website TEXT)';
+	$st = $db -> prepare($sql);
+	$st -> execute();
+	$sql = "INSERT INTO manufacturers (name) VALUES ('Various')";
 	$st = $db -> prepare($sql);
 	$st -> execute();
 	
 	// table 'packages'
-	$sql = 'CREATE TABLE "packages" ("pkgname" TEXT NOT NULL ,"pinsnum" INTEGER NOT NULL )';
+	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "packages" ("pkgname" TEXT NOT NULL ,"pinsnum" INTEGER NOT NULL )';
+	else $sql = 'CREATE TABLE packages (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, pkgname TEXT NOT NULL, pinsnum INTEGER NOT NULL )';
 	$st = $db -> prepare($sql);
 	$st -> execute();
 	
 	// table 'parts'
-	$sql = 'CREATE TABLE "parts" ("ID" INTEGER PRIMARY KEY  NOT NULL ,"name" TEXT NOT NULL ,"description" TEXT NOT NULL ,"manufacturer" TEXT NOT NULL ,"category" TEXT NOT NULL ,"appnotes" TEXT,"datasheeturl" TEXT,"package" TEXT NOT NULL ,"quantity" INTEGER NOT NULL ,"summary" TEXT)';
+	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "parts" ("ID" INTEGER PRIMARY KEY  NOT NULL ,"name" TEXT NOT NULL ,"description" TEXT NOT NULL ,"manufacturer" TEXT NOT NULL ,"category" TEXT NOT NULL ,"appnotes" TEXT,"datasheeturl" TEXT,"package" TEXT NOT NULL ,"quantity" INTEGER NOT NULL ,"summary" TEXT)';
+	else $sql = 'CREATE TABLE parts (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, name TEXT NOT NULL ,description TEXT NOT NULL ,manufacturer TEXT NOT NULL ,category TEXT NOT NULL ,appnotes TEXT,datasheeturl TEXT,package TEXT NOT NULL ,quantity INTEGER NOT NULL ,summary TEXT)';
 	$st = $db -> prepare($sql);
 	$st -> execute();
+	
+	echo '[OK]<br><br>';
+	
+	// creating data subdirectories...
+	echo 'creating data subdirectories...';
+	mkdir('data/appnotes');
+	mkdir('data/datasheets');
+	mkdir('data/logos');
+	mkdir('data/packages');
+	mkdir('data/pindescs');
 	
 	echo '[OK]<br><br>';
 	
@@ -176,6 +195,7 @@ else{
 	include 'pages/pkggen/qfpgen.php';
 	include 'pages/pkggen/to92gen.php';
 	include 'pages/pkggen/to220gen.php';
+	include 'pages/pkggen/sot23gen.php';
 	include 'pages/pkggen/othergen.php';
 	
 	echo '[OK]<br><br>';

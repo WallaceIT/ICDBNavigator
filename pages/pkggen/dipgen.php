@@ -63,7 +63,9 @@ function drawpkg_".$pkgname."(paper, partname, scalefactor){
 	$sqlquery = "SELECT COUNT(*) FROM packages WHERE pkgname = '".$pkgname."'";
 	$st = $db -> query($sqlquery);	
 	if(!$st -> fetchColumn()){
-		$st = $db -> prepare("INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)");
+		if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO packages ('pkgname','pinsnum') VALUES (?,?)";
+		else $sql = "INSERT INTO packages (pkgname, pinsnum) VALUES (?,?)";
+		$st = $db -> prepare($sql);
 		$st->bindParam(1, $pkgname);
 		$st->bindParam(2, $pins[$j]);
 		$st -> execute();

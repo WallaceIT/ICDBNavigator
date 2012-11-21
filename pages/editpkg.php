@@ -3,7 +3,7 @@ include_once('../data/config.php');
 if(isset($_POST['pin1'])){
 	$partfile = "../data/pindescs/".$_POST['partname'].".xml";	
 	
-	$xml = simplexml_load_string($row_part["pindesc"]);
+	$xml = simplexml_load_file($partfile);
 	$pkg = $xml -> xpath("/part/pkg[@type = '$_POST[toeditpkg]']");
 	if($pkg){
 		for($i=1; $i<=$_POST['pinsnum'];$i++){

@@ -85,7 +85,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
  			});
 	
 			//package dynamic dimensions
-			var scalefactor = $(document).height() / 705;
+			var scalefactor = $(document).height() / 750;
 			
 			//default (first) package  
 			var pincolor = "#dbdbdb";
@@ -608,11 +608,13 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 				<col />
 			</colgroup>
 			<tbody>
+				<?php if ($row_part["datasheeturl"] != ''){?>
 				<tr url="<?php echo $datasheeturl;?>">
 					<td><img src="images/pdf_16.png"/>Datasheet</td>
 					<td><?php echo $row_part['description'];?></td>
 				</tr>							
 				<?php
+				;}
 				//extract linked appnotes from DB
 				$appnotes_IDs = preg_split("/@/", $row_part['appnotes'],-1,PREG_SPLIT_NO_EMPTY);
 				for($i=0; $i<count($appnotes_IDs); $i++){

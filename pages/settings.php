@@ -123,13 +123,17 @@ if (!isset($_POST['action'])){?>
 </div>
 <?php ;}
 else if ($_POST['action'] == 'addcategory') {
-	$st = $db -> prepare("INSERT INTO categories ('category') VALUES (?)");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO categories ('category') VALUES (?)";
+	else $sql = "INSERT INTO categories (category) VALUES (?)";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $_POST['categoryname']);
 	$st -> execute();
 	echo 'New Category <b>'.$_POST['categoryname'].'</b> Added!';}
 	
 else if ($_POST['action'] == 'addmanufacturer') {
-	$st = $db -> prepare("INSERT INTO manufacturers ('name', 'website') VALUES (?, ?)");
+	if($_CONFIG_DB_USE_SQLITE) $sql = "INSERT INTO manufacturers ('name', 'website') VALUES (?, ?)";
+	else $sql = "INSERT INTO manufacturers (name, website) VALUES (?, ?)";
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $_POST['manufacturername']);
 	$st->bindParam(2, $_POST['manufacturerwebsite']);
 	$st -> execute();

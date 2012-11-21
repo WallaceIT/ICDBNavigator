@@ -1,7 +1,7 @@
 <?php
 include_once('../data/config.php');
 if(!isset($_POST['newdescription'])){
-	$sqlquery = "SELECT name,description,category,summary FROM parts WHERE ID =".$_POST['partID'];
+	$sqlquery = "SELECT name,description,category,summary FROM parts WHERE ID = ".$_POST['partID'];
 	$part = $db -> query($sqlquery);
 	$row_part = $part -> fetch(PDO::FETCH_ASSOC);
 	?>

@@ -5,8 +5,15 @@ if(isset($_POST['insert'])){
 	$sqlquery = "SELECT package FROM parts WHERE ID =".$_POST['partID'];
 	$curpackages = $db -> query($sqlquery);
 	$curpackages = $curpackages -> fetchColumn();
-	if (preg_match("/other:[0-9]+;/", $curpackages)){$st = $db -> prepare("UPDATE parts SET package = ? || ':0;' WHERE ID = ?");}
-	else{$st = $db -> prepare("UPDATE parts SET package = package || ? || ':0;' WHERE ID = ?");};	
+	if (preg_match("/other:[0-9]+;/", $curpackages)){
+		if($_CONFIG_DB_USE_SQLITE) $sql = "UPDATE parts SET package = ? || ':0;' WHERE ID = ?";
+		else $sql = "UPDATE parts SET package = CONCAT(?, ':0;') WHERE ID = ?";
+	}
+	else {
+		if($_CONFIG_DB_USE_SQLITE) $sql = "UPDATE parts SET package = package || ? || ':0;' WHERE ID = ?";
+		else $sql = "UPDATE parts SET package = CONCAT(package, ?, ':0;') WHERE ID = ?";		
+	}
+	$st = $db -> prepare($sql);
 	$st->bindParam(1, $_POST['newpkg']);
 	$st->bindParam(2, $_POST['partID']);
 	$st -> execute();
@@ -59,7 +66,7 @@ else{	//new package selection mask
 	$pkgfound = FALSE;
 	$sqlquery = "SELECT * FROM packages ORDER BY pinsnum ASC";
 	$packages = $db -> query($sqlquery);
-	$sqlquery = "SELECT package FROM parts WHERE ID =".$_GET['partID'];
+	$sqlquery = "SELECT package FROM parts WHERE ID = ".$_GET['partID'];
 	$curpackages = $db -> query($sqlquery);
 	$curpackages = $curpackages -> fetchColumn();
 	?>

@@ -34,8 +34,8 @@ $thead = '
 			<col/>
 		</colgroup>
 ';
-$sqlquery = "SELECT * FROM parts WHERE category = '".$_POST['category']."'";
-$results = $db -> query($sqlquery);
+$sql = "SELECT * FROM parts WHERE category = '".$_POST['category']."'";
+$results = $db -> query($sql);
 $row_results = $results -> fetch(PDO::FETCH_ASSOC);
 if(isset($row_results['name'])) {
 	$noresults = 0;
