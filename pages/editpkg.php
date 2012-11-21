@@ -37,7 +37,7 @@ elseif (isset($_POST['toeditpkg'])){
 	$oldvalues = FALSE;
 	$partfile = "../data/pindescs/".$_POST['partname'].".xml";	
 	$xml = simplexml_load_file($partfile);
-	if($xml -> xpath("/part/pkg[@type = '$_POST[toeditpkg]']/pin1/@functions")[0]) $oldvalues = TRUE;
+	if(current($xml -> xpath("/part/pkg[@type = '$_POST[toeditpkg]']/pin1/@functions"))) $oldvalues = TRUE;
 	?>
 		<form id="pineditForm">
 			<input type="hidden" name="partname" value="<?php echo $_POST['partname']; ?>">
@@ -55,7 +55,7 @@ elseif (isset($_POST['toeditpkg'])){
 					if($oldvalues){
 					for($i=1; $i<=$pinsnum;$i++){
 							$currentpin = 'pin'.$i;
-							$pinfunc = $xml -> xpath("/part/pkg[@type = '$_POST[toeditpkg]']/$currentpin/@functions")[0];
+							$pinfunc = current($xml -> xpath("/part/pkg[@type = '$_POST[toeditpkg]']/$currentpin/@functions"));
 							echo 'PIN '.$i.': <input name="'.$currentpin.'" class="pins" type="text" size="60" value="'.$pinfunc.'" ><br>';
 						}
 					}

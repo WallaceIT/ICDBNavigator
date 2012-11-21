@@ -16,7 +16,7 @@ $partfile = "../data/pindescs/".$row_part['name'].".xml";
 $xml = file_get_contents($partfile);
 
 $xmlIterator = new SimpleXMLIterator($xml);
-$pkg = $xmlIterator -> xpath("/part/pkg[@type = '$_GET[pkg]']")[0];
+$pkg = current($xmlIterator -> xpath("/part/pkg[@type = '$_GET[pkg]']"));
 
 $pinsblock = '';
 
