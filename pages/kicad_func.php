@@ -1,4 +1,6 @@
 <?php
+//ported from libgen by © Abhijit Bose, A.D.H.A.R Labs Research (CC BY-NC-SA 3.0 License), https://github.com/AdharLabs/Kicad-tools/tree/master/libgen
+//released under CC BY-NC-SA 3.0 License
 function kicadXML($name, $packagetype, $pins){
 	
 	$xml_out = '';

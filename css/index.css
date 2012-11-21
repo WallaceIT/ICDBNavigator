@@ -105,6 +105,15 @@ div#message{
 	padding: 10px 5px 5px 0;
 	overflow: auto;	
 }
+div#downloadMessage{
+	width: 300px;
+	height: 200px;
+	margin: 10px auto 10px auto;
+	border: dashed 1px #b0b0b0;
+	font-size: 14px;
+	padding: 10px 5px 5px 0;
+	overflow: auto;	
+}
 /*popups*/
 #popup_header{
 	background: #dedede;

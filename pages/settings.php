@@ -30,10 +30,71 @@ if (!isset($_POST['action'])){?>
 	<br><hr>
 	Download .lib file for kicad (all parts): <input type="button" id="libdownloadButton" value="Download!">
 	<br><hr>
+	Locally Download PDF files: <input type="button" id="pdfdownloadopenButton" value="Open Dialog">
+	<br><hr>
 	<input type="button" id="settingsOkButton" value="- Done! -">
 	<br>
 	<div id="message"></div>
 	<script type="text/javascript">
+
+	var stopdl = 0;
+
+	function datasheetdownload(ID){
+		$.ajax({
+			type: "POST",
+			data: {
+				dlID : ID,
+				type : 'datasheet'
+				},
+			dataType: "text",
+			url: "pages/pdfdownload.php",
+			success: function(response){
+				if(stopdl == 0){
+					if(response != 0){
+						$('#downloadMessage').append(ID+', ');
+						datasheetdownload(response);
+					}
+					else{
+						$('#downloadMessage').append('<br><br>downloading appnotes, please wait...<br>IDs: ');
+						appnotedownload(1);
+					}
+				}
+				else{
+					$('#downloadMessage').append('<br><b>*STOPPED!*</b>');
+					$('#downloadControls').html('<input type="button" class="OkButton" value="- Close -">');
+				}
+			}
+		});
+	};
+
+	function appnotedownload(ID){
+		$.ajax({
+			type: "POST",
+			data: {
+				dlID : ID,
+				type : 'appnote'
+				},
+			dataType: "text",
+			url: "pages/pdfdownload.php",
+			success: function(response){
+				if(stopdl == 0){
+					if(response != 0){
+						$('#downloadMessage').append(ID+', ');
+						appnotedownload(response);
+					}
+					else{
+						$('#downloadMessage').append('<br><b>- ALL DONE! -</b>');
+						$('#downloadControls').html('<input type="button" class="OkButton" value="- Close -">');
+					}
+				}
+				else{
+					$('#downloadMessage').append('<br><b>*STOPPED!*</b>');
+					$('#downloadControls').html('<input type="button" class="OkButton" value="- Close -">');
+				}
+			}
+		});
+	};
+	
 	$(document).ready(function() {
 		$('#addcategoryForm').submit(function(event){
 			event.preventDefault();
@@ -106,6 +167,25 @@ if (!isset($_POST['action'])){?>
 		$('#libdownloadButton').click(function(){
 			location.href = 'pages/kicadlib_all.php';
 		});
+		$('#pdfdownloadopenButton').click( function(){
+				$.colorbox({
+					html: '<div id="popup_header">'+$('#pdfdownloadPopup').html()+'</div>',
+					width: "400px",
+					height: "400px",
+					overlayClose: false,
+					escKey: false
+				});
+		});
+
+		$('#pdfdownloadButton').live('click', function(){
+			$('#downloadControls').html('<input type="button" id="stopdownloadButton" value="STOP!">');
+			$('#downloadMessage').html('downloading datasheets, please wait...<br>IDs: ');
+			datasheetdownload(1);
+		});
+		
+		$('#stopdownloadButton').live('click', function(){
+			stopdl = 1;
+		});
 		
 		$('#settingsOkButton').click(function(){
 			if($('#backuphref').attr('href') != ''){
@@ -125,6 +205,14 @@ if (!isset($_POST['action'])){?>
 		});
 	});
 	</script>
+</div>
+<div id="pdfdownloadPopup" class="hide">
+		Download all non-existent PDF files<br><br>
+		<div id="downloadMessage"></div>
+		<div id="downloadControls">
+			<input type="button" class="OkButton" value="- Cancel -"> 
+			<input type="button" id="pdfdownloadButton" value="Download!">
+		</div>
 </div>
 <?php ;}
 else if ($_POST['action'] == 'addcategory') {
