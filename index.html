@@ -14,12 +14,12 @@
 	window.onload = function () {
 		
 		//class .OkButton close colorbox
-		$(".OkButton").live('click', function(event) {
+		$(".OkButton").live('click', function() {
 			$.colorbox.close();
 		});
 		
 		//class .RefreshButton close colorbox and refresh the page
-		$(".RefreshButton").live('click', function(event) {
+		$(".RefreshButton").live('click', function() {
 			$.colorbox.close();
 			//$('body').fadeOut(500);
 			parent.location.reload();
@@ -65,7 +65,7 @@
 				}
 			});
 		});
-		$('#categoriestable tr').live('click', function(event) {
+		$('#categoriestable tr').live('click', function() {
 			var cat = $(this).attr("cat");
 			$.ajax({
 				type: "POST",
@@ -98,7 +98,7 @@
 				}
 			});
 		});
-		$("#settings").click(function(event) {
+		$("#settings").click(function() {
 			$.colorbox({
 				href:"pages/settings.php",
 				width: "600px",

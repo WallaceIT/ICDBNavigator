@@ -12,7 +12,7 @@ if(!isset($_POST['populate'])){
 			<input type="checkbox" name="skip" id="skipbox" value="1"> Skip pins' description fill in<br>
 			<div id="pindiv">
 				<i>Leave blank if Not Connected (NC)</i><br>
-				<?php for($i=1; $i<=$pinsnum;$i++) echo '<input name="pin'.$i.'" class="pins" type="text" size="60" placeholder="pin '.$i.' functions..."><br>';?>
+				<?php for($i=1; $i<=$pinsnum;$i++) echo '<input name="pin'.$i.'" class="pins" type="text" size="40" placeholder="pin '.$i.' functions..."><br>';?>
 			</div>
 		</div>
 		<input type="hidden" name="partID" value="<?php echo $_POST['partID']; ?>">

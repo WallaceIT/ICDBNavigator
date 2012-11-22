@@ -56,7 +56,7 @@ elseif (isset($_POST['toeditpkg'])){
 					for($i=1; $i<=$pinsnum;$i++){
 							$currentpin = 'pin'.$i;
 							$pinfunc = current($xml -> xpath("/part/pkg[@type = '$_POST[toeditpkg]']/$currentpin/@functions"));
-							echo 'PIN '.$i.': <input name="'.$currentpin.'" class="pins" type="text" size="60" value="'.$pinfunc.'" ><br>';
+							echo 'PIN '.$i.': <input name="'.$currentpin.'" class="pins" type="text" size="40" value="'.$pinfunc.'" ><br>';
 						}
 					}
 					else{

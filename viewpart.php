@@ -156,12 +156,12 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			});
 
 			//class .OkButton close colorbox (for Ok/Cancel buttons)
-			$(".OkButton").live('click', function(event) {
+			$(".OkButton").live('click', function() {
 				$.colorbox.close();
 			});
 
 			//class .RefreshButton close colorbox and refresh the page
-			$(".RefreshButton").live('click', function(event) {
+			$(".RefreshButton").live('click', function() {
 				$.colorbox.close();
 				$('body').fadeOut(500);
 				parent.location.reload();
@@ -204,8 +204,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 
 			// -> add new package
 			var y = 0;	//for colorbox resizing
-			$("#addpkgTool").click(function(event) {
-				event.preventDefault();
+			$("#addpkgTool").click(function() {
 				$.colorbox({
 					href:"pages/addpkg.php?partID="+partID+"&partname="+partname,
 					width: "600px",
@@ -253,7 +252,6 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 		      });
 
 			$("#addpkgButton").live('click', function() {
-				event.preventDefault();
 				$.ajax({
 					type: "POST",
 					url: "pages/addpkg.php",
@@ -268,8 +266,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			});
 
 		    // -> edit package
-		    $("#editpkgTool").click(function(event) {
-				event.preventDefault();
+		    $("#editpkgTool").click(function() {
 				$.colorbox({
 					href:"pages/editpkg.php?partID="+partID+"&partname="+partname,
 					width: "600px",
@@ -288,7 +285,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 						$('#popup_middle').html($(response).find('#popup_middle_content').html());
 						$('#popup_middle').show();
 						$('#popup_footer').html($(response).find('#popup_footer_content').html());
-						y = $('#pinpopulate_list').height() + 240;
+						y = $('#pinpopulate_list').height() + 250;
 						$.colorbox.resize({height:y});
 					}
 				});
@@ -350,7 +347,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 				});
 			});
 
-			$('#resultstable tr').live('click', function(event) {
+			$('#resultstable tr').live('click', function() {
 				window.location = $(this).attr("url");
 			});
 			$('#appnotestable tr').click(function() {
@@ -359,11 +356,11 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			});
 			
 			//add/link and unlink appnotes and (eventually) datasheet
-			$("#appnoteplus").click(function(event) {
+			$("#appnoteplus").click(function() {
 				$.colorbox({href:"pages/addappnote.php?partname=<?php echo $row_part['name']; if($row_part['datasheeturl'] == '') echo '&needdatasheet=1';?>"});
 			});
 
-			$("#appnoteminus").click(function(event) {
+			$("#appnoteminus").click(function() {
 				$.colorbox({href:"pages/unlinkappnote.php?partID="+partID});
 			});
 			
@@ -445,9 +442,9 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			});
 
 			//edit description
-			$("#editdescTool").click( function(event) {
+			$("#editdescTool").click( function() {
 
-				$("#editdescButton").live("click", function(event) {
+				$("#editdescButton").live("click", function() {
 					$.ajax({
 						type: "POST",
 						url: "pages/editdesc.php",
