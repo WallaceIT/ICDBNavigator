@@ -23,7 +23,8 @@ $pinsblock = '';
 if($pkg){
 	
 	for( $pkg->rewind(); $pkg->valid(); $pkg->next() ) {
-		$pinfunc = $pkg -> current()["functions"];
+		$pinfunc = $pkg -> current();
+		$pinfunc = $pinfunc["functions"];
 		$pinsblock .= preg_replace('/\s+/', '', $pinfunc);
 		$pinsblock .= ';';
 		}
