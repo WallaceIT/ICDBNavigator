@@ -11,22 +11,21 @@
 	<script src="js/jquery.colorbox-min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.cleditor.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-	window.onload = function () {
+	window.onload = function(){
 		
 		//class .OkButton close colorbox
-		$(".OkButton").live('click', function() {
+		$( document ).on('click', '.OkButton', function() {
 			$.colorbox.close();
 		});
 		
 		//class .RefreshButton close colorbox and refresh the page
-		$(".RefreshButton").live('click', function() {
+		$( document ).on('click', '.RefreshButton', function() {
 			$.colorbox.close();
-			//$('body').fadeOut(500);
 			parent.location.reload();
 		});
 		
 		//search
-		$("#searchForm").submit(function(event) {
+		$('#searchForm').submit(function(event) {
 			event.preventDefault();
 			term = $(this).find( 'input[name="tosearch"]' ).val(),
 			$.ajax({
@@ -40,7 +39,7 @@
 			});
 		});
 
-		$('#resultstable tr').live('mousedown', function(event) {
+		$('#results').on('mousedown', '#resultstable tr', function(event) {
 			var url = $(this).attr("url");
 			switch(event.which)
 		    {
@@ -65,7 +64,7 @@
 				}
 			});
 		});
-		$('#categoriestable tr').live('click', function() {
+		$('#results').on('click', '#categoriestable tr', function() {
 			var cat = $(this).attr("cat");
 			$.ajax({
 				type: "POST",
@@ -100,8 +99,9 @@
 		});
 		$("#settings").click(function() {
 			$.colorbox({
-				href:"pages/settings.php",
+				href: "pages/utilities.php",
 				width: "600px",
+				height: "550px",
 				overlayClose: false,
 				escKey: false});
 		});
@@ -113,7 +113,7 @@
 					$.colorbox({
 						html:response,
 						width: "600px",
-						height: "500px",
+						height: "550px",
 						});
 					$("#clearea").cleditor({
 						width:	500,
@@ -126,15 +126,14 @@
 			});
 		});
 		//adding part...
-		$('#addpartForm').live('submit', function(event){
+		$( document ).on('submit', '#addpartForm', function(event){
 			event.preventDefault();
 			var datasheetUrl = $(this).find('input[name="addpartDatasheetUrl"]').val();
 			var name = $(this).find('input[name="addpartName"]').val();
-			var pkg = $(this).find('select[name="addpartPackage"]').val();
-			
+			var pkg = $(this).find('select[name="addpartPackage"]').val();			
 			if($(this).find('input[name="addpartDatasheetUrl"]').val() != ''){
 				$.colorbox({
-					html:"<div id='cboxInnerContent'>Downloading Datasheet, please wait...</div>",
+					html:"<div id='popup_header'>Downloading Datasheet, please wait...</div>",
 					overlayClose: false,
 					escKey: false
 					})
@@ -159,7 +158,7 @@
 								$.colorbox({
 									html:response2,
 									width: "600px",
-									height: "500px",
+									height: "550px",
 									overlayClose: false,
 									escKey: false
 									});

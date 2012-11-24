@@ -13,7 +13,7 @@
 	</div>
 	<script type="text/javascript">
 	$(document).ready(function() {
-			$('#removepkgForm').live('submit', function(event){
+			$( document ).on('submit', '#removepkgForm', function(event){
 				event.preventDefault();
 				$.ajax({
 					type: "POST",

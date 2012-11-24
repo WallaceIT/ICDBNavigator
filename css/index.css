@@ -33,7 +33,6 @@ img.tools{
 	cursor:pointer;
 	margin: 0 5px 0 5px;
 }
-
 div#results{
 	width: 65%;
 	margin: 30px auto 0 auto;
@@ -41,7 +40,6 @@ div#results{
 	background: #dedede;
 	border: solid 5px #b0b0b0;
 	border-radius: 15px 15px 0 0;
-	align: center;
 	box-shadow: 0 0 15px #5D5D5D;
 }
 div#resultstitle{
@@ -68,7 +66,6 @@ table#resultstable{
 	text-align: left;
 	border-collapse: collapse;
 }
-
 table#categoriestable{
 	font-size: 12px;
 	font-weight: bold;
@@ -76,7 +73,6 @@ table#categoriestable{
 	text-align: left;
 	border-collapse: collapse;
 }
-
 table#resultstable td, table#categoriestable td{
 	padding: 8px 8px 8px 30px;
 	background: #dedede;
@@ -89,7 +85,6 @@ table#resultstable tr:hover td, table#categoriestable tr:hover td{
 form#addpartForm{
 	margin: 15px;
 }
-
 div#pinpopulate_list{
 	max-height: 340px;
 	overflow: auto;
@@ -105,16 +100,7 @@ div#message{
 	padding: 10px 5px 5px 0;
 	overflow: auto;	
 }
-div#downloadMessage{
-	width: 300px;
-	height: 200px;
-	margin: 10px auto 10px auto;
-	border: dashed 1px #b0b0b0;
-	font-size: 14px;
-	padding: 10px 5px 5px 0;
-	overflow: auto;	
-}
-/*popups*/
+/* popups */
 #popup_header{
 	background: #dedede;
 	text-align: center;
@@ -133,4 +119,30 @@ div#downloadMessage{
 	text-align: center;
 	padding: 10px;
 	height: 45px;
+}
+/* utilities */
+div#tabHeader{
+	width: 460px;
+	margin: 10px auto 0px auto;
+	border: solid 1px #b0b0b0;
+	font-size: 13px;
+}
+div.tabLink{
+	width: 100px;
+	float: left;
+	border-collapse: collapse;
+	padding: 5px;
+}
+div.tabLink:hover{
+	background: #ebebeb;
+	cursor:pointer;
+}
+div#tabContainer{
+	clear: both;
+	width: 460px;
+	height: 200px;
+	overflow: auto;
+	padding: 30px 10px 10px 10px;
+	border: solid 1px #b0b0b0;
+	margin: 0px auto;
 }

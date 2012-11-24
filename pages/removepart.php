@@ -12,7 +12,7 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#removepartForm').live('submit', function(event){
+			$( document ).on('submit', '#removepartForm', function(event){
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -31,8 +31,10 @@
 	$st = $db -> prepare("DELETE FROM parts WHERE ID = ?");
 	$st->bindParam(1, $_POST['partID']);
 	$st -> execute();
-	$partfile = "../data/".$_POST['partname'].".xml";
+	$partfile = "../data/pindescs/".$_POST['partname'].".xml";
 	if (file_exists($partfile)) unlink($partfile);
+	$datasheetfile = "../data/datasheets/".$_POST['partname'].".pdf";
+	if (file_exists($datasheetfile)) unlink($datasheetfile);
 	echo '<div id="popup_header"><b>'.$_POST['partname'].'</b> removed from the DB!<br><br>
 			<form action="index.html"><input type="submit" value="Ok"></form></div>';
 }

@@ -26,7 +26,7 @@ if(!isset($_POST['populate'])){
 	
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$('#pinpopulateForm').live('submit', function(event){
+		$( document ).on('submit', '#pinpopulateForm', function(event){
 			event.preventDefault();
 			$.ajax({
 				type: "POST",
@@ -40,7 +40,7 @@ if(!isset($_POST['populate'])){
 				}
 			});
 		});
-		$("#skipbox").live('click', function() {
+		$( document ).on('click', "#skipbox", function() {
 	          if ($(this).is(':checked')){
 	              $(".pins").attr("disabled", true);
 	              $("#pindiv").slideUp();

@@ -39,8 +39,8 @@ else {
 	};
 }
 // this part's datasheet file exists locally?
-$datasheeturl= 'data/datasheets/'.$row_part["name"].'.pdf';
-if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
+$datasheethref= 'data/datasheets/'.$row_part["name"].'.pdf';
+if(!file_exists($datasheethref)) $datasheethref = $row_part["datasheeturl"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,7 +64,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 	?>
 	<script type="text/javascript" charset="utf-8">
 		var xmlData;
-		window.onload = function () {
+		window.onload = function(){
 
 			var partname = '<?php echo $row_part["name"];?>';
 			var partID = '<?php echo $ID;?>';
@@ -88,9 +88,9 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			var scalefactor = $(document).height() / 750;
 			
 			//default (first) package  
-			var pincolor = "#dbdbdb";
-			var paper = Raphael("package", 230, 600*scalefactor);
-			var curpkg = "<?php echo $pkgs[0][0]; ?>";
+			var pincolor = '#dbdbdb';
+			var paper = Raphael('package', 230, 600*scalefactor);
+			var curpkg = '<?php echo $pkgs[0][0]; ?>';
 			eval('drawpkg_'+curpkg+'(paper, partname, '+scalefactor+')');
 			$('.pinobj').attr('fill',pincolor);
 			
@@ -104,36 +104,34 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			
 			//actions for pins
 			var previous = null;
-			$('.pinobj').live('mouseover', function() {	//coloring ad qtipping pins
+			$('#package').on('mouseover', '.pinobj', function() {	//coloring ad qtipping pins
 				$(this).attr('fill', '#f5f5f5');
 
 				var pinSet = $('pkg', xmlData).filter("[type='"+curpkg+"']");
 				var pinFunctions = $($(this).attr('name'), pinSet).attr('functions');
-				if(pinFunctions) var tipContent = '<b>'+$(this).attr('name').toUpperCase()+':</b> '+ pinFunctions;
-				else var tipContent = '';
-				
+				if(pinFunctions){
+					var tipContent = '<b>'+$(this).attr('name').toUpperCase()+':</b> '+ pinFunctions;
 
-				var orientation = $(this).attr('orientation');				
-				switch (orientation){
-					case 'R':
-						var atpos = 'left center';
-						var mypos = 'center right';
-						break;
-					case 'T':
-						var atpos = 'top center';
-						var mypos = 'bottom center';
-						break;
-					case 'B':
-						var atpos = 'bottom center';
-						var mypos = 'top center';
-						break;
-					case 'L':
-					default:
-						var atpos = 'right center';
-						var mypos = 'center left';
-						break;
-
-				}
+					var orientation = $(this).attr('orientation');				
+					switch (orientation){
+						case 'R':
+							var atpos = 'left center';
+							var mypos = 'center right';
+							break;
+						case 'T':
+							var atpos = 'top center';
+							var mypos = 'bottom center';
+							break;
+						case 'B':
+							var atpos = 'bottom center';
+							var mypos = 'top center';
+							break;
+						case 'L':
+						default:
+							var atpos = 'right center';
+							var mypos = 'center left';
+							break;
+					}
 				$(this).qtip({
 					overwrite: false,
 					content: tipContent,
@@ -149,19 +147,23 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 						classes: 'ui-tooltip-light ui-tooltip-rounded'
 					}
 				});
+					
+
+				}				
+				else var tipContent = '';
 			});
 			
-			$('.pinobj').live('mouseout', function() {	//de-coloring pins on mouse out
+			$('#package').on('mouseout', '.pinobj', function() {	//de-coloring pins on mouse out
 				if ($(this).attr('name') != previous) $(this).attr('fill', pincolor);
 			});
 
 			//class .OkButton close colorbox (for Ok/Cancel buttons)
-			$(".OkButton").live('click', function() {
+			$( document ).on('click', '.OkButton', function() {
 				$.colorbox.close();
 			});
 
 			//class .RefreshButton close colorbox and refresh the page
-			$(".RefreshButton").live('click', function() {
+			$( document ).on('click', '.RefreshButton', function() {
 				$.colorbox.close();
 				$('body').fadeOut(500);
 				parent.location.reload();
@@ -204,7 +206,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 
 			// -> add new package
 			var y = 0;	//for colorbox resizing
-			$("#addpkgTool").click(function() {
+			$('#addpkgTool').click(function() {
 				$.colorbox({
 					href:"pages/addpkg.php?partID="+partID+"&partname="+partname,
 					width: "600px",
@@ -212,7 +214,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 				});
 			});
 
-			$("#addpkgForm").live('submit', function(event) {
+			$( document ).on('submit', '#addpkgForm', function(event) {
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -226,7 +228,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 						y = $('#pinpopulate_list').height() + 240;
 						$('#popup_middle').hide();
 						if ($('#skipbox').is(':checked')){
-							$(".pins").attr("disabled", true);
+							$('.pins').attr('disabled', true);
 			          	}
 						else{
 						$('#popup_middle').show();
@@ -237,21 +239,21 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 				});
 			});
 
-			$("#skipbox").live('click', function() {
+			$( document ).on('click', '#skipbox', function() {
 		          if ($(this).is(':checked')){
-						$(".pins").attr("disabled", true);
-						$("#popup_middle").slideUp();
+						$('.pins').attr('disabled', true);
+						$('#popup_middle').slideUp();
 						$.colorbox.resize({height: 177});
 		          }
 		          else {
-						$(".pins").attr("disabled", false);
+						$('.pins').attr('disabled', false);
 						$.colorbox.resize({height:y});
-						$("#popup_middle").slideDown();
+						$('#popup_middle').slideDown();
 		          }
 	              	
 		      });
 
-			$("#addpkgButton").live('click', function() {
+			$( document ).on('click', '#addpkgButton', function() {
 				$.ajax({
 					type: "POST",
 					url: "pages/addpkg.php",
@@ -266,7 +268,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			});
 
 		    // -> edit package
-		    $("#editpkgTool").click(function() {
+		    $('#editpkgTool').click(function() {
 				$.colorbox({
 					href:"pages/editpkg.php?partID="+partID+"&partname="+partname,
 					width: "600px",
@@ -274,7 +276,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 				});
 			});
 
-		    $("#editpkgForm").live('submit', function(event) {
+		    $( document ).on('submit', '#editpkgForm', function(event) {
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -290,7 +292,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 					}
 				});
 			});
-		    $("#editpkgButton").live('click', function() {
+		    $( document ).on('click', '#editpkgButton', function() {
 				$.ajax({
 					type: "POST",
 					url: "pages/editpkg.php",
@@ -303,7 +305,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 					}
 				});
 			});
-		    $("#removepkgFirstForm").live('submit', function(event) {
+		    $( document ).on('submit', '#removepkgFirstForm', function(event) {
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -318,7 +320,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			
 			// -> search
 			
-			$("#searchTool").click(function(){
+			$('#searchTool').click(function(){
 				$.ajax({
 					type: "POST",
 					url: "pages/search.php",
@@ -326,13 +328,13 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 						$.colorbox({
 							html: response,
 							width: "600px",
-							height: "500px",
+							height: "520px",
 						});
 					}
 				});
 			});
 
-			$("#searchForm").live('submit', function(event) {
+			$( document ).on('submit', '#searchForm', function(event) {
 				event.preventDefault();
 				term = $(this).find('input[name="tosearch"]').val(),
 				$.ajax({
@@ -341,110 +343,47 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 					data: {string: term, all: '0'},
 					dataType: "text",
 					success: function(response){
-						$("#results").html(response);
-						$("#results").slideDown(500);
+						$('#results').html(response);
+						$('#results').slideDown(500);
 					}
 				});
 			});
 
-			$('#resultstable tr').live('click', function() {
+			$( document ).on('click', '#resultstable tr', function() {
 				window.location = $(this).attr("url");
 			});
-			$('#appnotestable tr').click(function() {
+			$( document ).on('click', '#appnotestable tr', function() {
 				var url = $(this).attr("url");
 				window.open(url,"_blank");
 			});
 			
 			//add/link and unlink appnotes and (eventually) datasheet
-			$("#appnoteplus").click(function() {
-				$.colorbox({href:"pages/addappnote.php?partname=<?php echo $row_part['name']; if($row_part['datasheeturl'] == '') echo '&needdatasheet=1';?>"});
+			$('#appnoteplus').click(function() {
+				$.ajax({
+					type: "POST",
+					url: "pages/addappnote.php",
+					data: {
+							partID: partID,
+							partname: partname<?php if($row_part['datasheeturl'] == '') echo ',needdatasheet: 1'; else echo ",datasheeturl: '$row_part[datasheeturl]'";?>
+							},
+					dataType: "text",
+					success: function(response){
+						$.colorbox({
+							html: response,
+							width: "600px",
+						});
+					}
+				 });
 			});
 
-			$("#appnoteminus").click(function() {
+			$('#appnoteminus').click(function() {
 				$.colorbox({href:"pages/unlinkappnote.php?partID="+partID});
-			});
-			
-			$('#addappnoteForm').live('submit', function(event){
-				event.preventDefault();
-				var name = $(this).find( 'input[name="addappnoteName"]' ).val();
-				var desc = $(this).find( 'input[name="addappnoteDesc"]' ).val();
-				var url = $(this).find( 'input[name="addappnoteUrl"]' ).val();
-				$.colorbox({html:'<div id="popup_header">Downloading Application Note, please wait...</div>'});
-				$.ajax({
-					type: "POST",
-					url: "pages/addappnote.php",
-					data: {name: name, desc: desc, url: url, partID: partID},
-					dataType: "text",
-					success: function(response){
-						$.colorbox.close();
-						location.reload(true);
-					}
-				});
-			});
-			
-			$("#linkappnoteForm").live('submit', function(event){
-				event.preventDefault();
-				var appnoteID = $(this).find( 'select[name="linkappnoteID"]' ).val();
-				$.ajax({
-					type: "POST",
-					url: "pages/addappnote.php",
-					data: {appnoteID: appnoteID, partID: partID},
-					dataType: "text",
-					success: function(response){
-						location.reload(true);
-					}
-				});
-			});
-			
-			$('#unlinkappnoteForm').live('submit', function(event){
-				event.preventDefault();
-				var appnoteID = $(this).find( 'select[name="unlinkappnoteID"]' ).val();
-				$.ajax({
-					type: "POST",
-					url: "pages/unlinkappnote.php",
-					data: {appnoteID: appnoteID, partID: partID},
-					dataType: "text",
-					success: function(response){
-						location.reload(true);
-					}
-				});
-			});
-
-			$('#adddatasheetForm').live('submit', function(event){
-				event.preventDefault();
-				var partname = '<?php echo $row_part["name"]?>';
-				var url = $(this).find( 'input[name="adddatasheetUrl"]' ).val();
-				$.colorbox({html:'<div id="popup_header">Downloading Datasheet, please wait...</div>'});
-				$.ajax({
-					type: "POST",
-					url: "pages/adddatasheet.php",
-					data: {partname: partname, partID: partID, url: url},
-					dataType: "text",
-					success: function(response){
-						$.colorbox.close();
-						location.reload(true);
-					}
-				});
-			});
-
-			$('#downloaddatasheetButton').live('click', function(){
-				$.colorbox({html:'<div id="popup_header">Downloading Datasheet, please wait...</div>'});
-				$.ajax({
-					type: "POST",
-					url: "pages/adddatasheet.php",
-					data: {partname: partname, url: '<?php echo $row_part["datasheeturl"];?>'},
-					dataType: "text",
-					success: function(response){
-						$.colorbox.close();
-						location.reload(true);
-					}
-				});
 			});
 
 			//edit description
-			$("#editdescTool").click( function() {
+			$('#editdescTool').click( function() {
 
-				$("#editdescButton").live("click", function() {
+				$( document ).on('click', '#editdescButton', function() {
 					$.ajax({
 						type: "POST",
 						url: "pages/editdesc.php",
@@ -471,7 +410,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 							width: "600px",
 							height: "520px",
 						});
-						$("#newsummary").cleditor({
+						$('#newsummary').cleditor({
 							width:	500,
 							height:	270,
 							controls:	"bold italic underline subscript superscript | size " +
@@ -486,7 +425,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			<?php if(!$nopkgs){?>
 			//quantity
 			var qtychanged = 0;
-			$("#qtybox").hover(
+			$('#qtybox').hover(
 				function() {
 					$(this).stop(true, true).animate({height: "<?php echo $numpkgs*45; ?>px"}, 500);
 				},
@@ -509,13 +448,13 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 				}
 			);
 
-			$('.qtyplus').live('click', function(){
+			$('#qtybox').on('click', '.qtyplus', function(){
 				$("#qty_"+$(this).attr('alt')).val( Number($("#qty_"+$(this).attr('alt')).val()) + 1 );
 				$("#qty_total").val( Number($("#qty_total").val()) + 1 );
 				qtychanged = 1;				
 			});
 			
-			$('.qtyminus').live('click', function(){
+			$('#qtybox').on('click', '.qtyminus', function(){
 				if($("#qty_"+$(this).attr('alt')).val() != 0){
 					$("#qty_"+$(this).attr('alt')).val( Number($("#qty_"+$(this).attr('alt')).val()) - 1 );
 					$("#qty_total").val( Number($("#qty_total").val()) - 1 );
@@ -607,7 +546,7 @@ if(!file_exists($datasheeturl)) $datasheeturl = $row_part["datasheeturl"];
 			</colgroup>
 			<tbody>
 				<?php if ($row_part["datasheeturl"] != ''){?>
-				<tr url="<?php echo $datasheeturl;?>">
+				<tr url="<?php echo $datasheethref;?>">
 					<td><img src="images/pdf_16.png"/>Datasheet</td>
 					<td><?php echo $row_part['description'];?></td>
 				</tr>							

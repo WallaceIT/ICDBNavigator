@@ -16,23 +16,22 @@
 
 			
 			//package dynamic dimensions
-			var scalefactor = $(document).height() / 690;
-			var partname = 'TESTPARTNAME12';  
-			var pincolor = "#bfbfbf";
+			var scalefactor = $(document).height() / 690;  
+			var pincolor = '#bfbfbf';
 			var paper = Raphael("pkg", 230, 600*scalefactor);
 
-			var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+			var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
 		        lineNumbers: true 
 		      });
 
-			$("#eval").click( function() {
+			$('#eval').click( function() {
 				paper.clear();
 				var code = editor.getValue();
 				eval(code);
 				$('.pinobj').attr('fill',pincolor);
 			});
 
-			$("#save").click( function() {
+			$('#save').click( function() {
 				$.colorbox({
 					html: $('#popup').html(),
 					width: '600px',
@@ -40,7 +39,7 @@
 				});
 			});
 
-			$("#savepkgForm").live("submit", function(event) {
+			$( document ).on('submit', '#savepkgForm', function(event) {
 				event.preventDefault();
 				var pkgName = $(this).find('input[name="pkgName"]').val();
 				var pkgPinsNum = $(this).find('input[name="pkgPinsNum"]').val();
@@ -64,11 +63,11 @@
 				});
 			});
 
-			$(".OkButton").live("click", function(event) {
+			$( document ).on('click', '.OkButton', function(event) {
 				$.colorbox.close();
 			});
 
-			$("#ahowto").click(function(event) {
+			$('#ahowto').click(function(event) {
 				event.preventDefault();
 				$.colorbox({
 					html: $('#howto').html(),

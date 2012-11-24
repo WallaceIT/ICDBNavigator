@@ -74,7 +74,6 @@ div#pkgselect{
 	position: absolute;
 	left: 70px;
 	top: 20px;
-	align:center;
 	text-align: center;
 }
 
@@ -192,7 +191,7 @@ div#qtybox{
 	position: absolute;
 	top: 20px;
 	right: 35px;
-	padding: 10px;
+	padding: 5px;
 	text-align: center;
 	background: #dedede;
 	border: solid 5px #b0b0b0;

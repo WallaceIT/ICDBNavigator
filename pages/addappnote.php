@@ -2,6 +2,7 @@
 include_once('../data/config.php');
 if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 <div id="popup_header">
+<div id="aand">
 	Add new Application Note from web URL...
 	<form action="#" id="addappnoteForm">
 		<input name="addappnoteName" type="text" size="10" placeholder="Name" required>
@@ -28,7 +29,7 @@ if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 		</select>
 	<input type="submit" id="addappnoteButton" value="Link!">
 	</form>
-	<?php if (isset($_GET['needdatasheet'])){?>
+	<?php if (isset($_POST['needdatasheet'])){?>
 	<br>
 	<hr>
 	<br>Add Datasheet to this part:
@@ -38,7 +39,7 @@ if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 		<input type="submit" id="adddatasheetButton" value="Add!">
 	</form>
 	<?php ;}
-	elseif(!file_exists("../data/datasheets/$_GET[partname].pdf")){
+	elseif(!file_exists("../data/datasheets/$_POST[partname].pdf")){
 	?>
 	<br>
 	<hr>
@@ -47,6 +48,65 @@ if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 	<?php ;} ?>
 	<br><input type="button" class="OkButton" value="Cancel">
 </div>
+</div>
+<script type="text/javascript">
+$( document ).ready(function() {
+
+	var partname = '<?php echo $_POST['partname']?>';
+	var partID = '<?php echo $_POST['partID']?>';
+	<?php if (isset($_POST['datasheeturl'])) echo "var datasheeturl = '$_POST[datasheeturl]';"?>
+	
+	$( document ).on('submit', '#linkappnoteForm', function(event){
+		event.preventDefault();
+		var appnoteID = $(this).find( 'select[name="linkappnoteID"]' ).val();
+		$.ajax({
+			type: "POST",
+			url: "pages/addappnote.php",
+			data: {appnoteID: appnoteID, partID: partID},
+			dataType: "text",
+			success: function(response){
+				location.reload(true);
+			}
+		});
+	});
+
+	<?php if (isset($_POST['needdatasheet'])){?>
+
+	$( document ).on('submit', '#adddatasheetForm', function(event){
+		event.preventDefault();
+		var url = $(this).find( 'input[name="adddatasheetUrl"]' ).val();
+		$.colorbox({html:'<div id="popup_header">Downloading Datasheet, please wait...</div>'});
+		$.ajax({
+			type: "POST",
+			url: "pages/adddatasheet.php",
+			data: {partname: partname, partID: partID, url: url},
+			dataType: "text",
+			success: function(response){
+				$.colorbox.close();
+				location.reload(true);
+			}
+		});
+	});
+
+	<?php ;}
+	elseif (isset($_POST['datasheeturl'])){?>
+	$('#popup_header').on('click', '#downloaddatasheetButton', function(){
+		$.colorbox({html:'<div id="popup_header">Downloading Datasheet, please wait...</div>'});
+		$.ajax({
+			type: "POST",
+			url: "pages/adddatasheet.php",
+			data: {partname: partname, url: datasheeturl},
+			dataType: "text",
+			success: function(response){
+				$.colorbox.close();
+				location.reload(true);
+			}
+		});
+	});
+	<?php ;}?>
+	
+});
+</script>
 <?php ;} else if (isset($_POST['url'])) {
 	$st = $db -> prepare("SELECT ID FROM appnotes ORDER BY ID DESC LIMIT 0,1");
 	$st -> execute();

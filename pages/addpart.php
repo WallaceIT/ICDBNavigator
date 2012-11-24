@@ -38,8 +38,8 @@ if(!isset($_POST['addpartName'])){?>
 			<option value="other">other...</option>
 		</select>
 		<input name="addpartQuantity" size="15" placeholder="Quantity (blank if 0)" pattern="[-0-9]+"><br>
-		<input name="addpartDescription" type="text" size="78" placeholder="Description..." required><br>
-		<input name="addpartDatasheetUrl" type="url" size="78" placeholder="Datasheet URL..."><br>
+		<input name="addpartDescription" type="text" size="50" placeholder="Description..." required><br>
+		<input name="addpartDatasheetUrl" type="url" size="50" placeholder="Datasheet URL..."><br>
 		<div align=center><textarea name="addpartSummary" id="clearea">Summary...</textarea></div>
 		<br>
 		<input type="button" class="OkButton" value="Cancel"> 

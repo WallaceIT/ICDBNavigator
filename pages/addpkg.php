@@ -47,7 +47,7 @@ elseif (isset($_POST['newpkg'])){
 			<form id="pinpopulateForm">
 				<div id="pinpopulate_list">
 					Leave blank if Not Connected (NC)<br>
-					<?php for($i=1; $i<=$pinsnum;$i++) echo '<input name="pin'.$i.'" class="pins" type="text" size="60" placeholder="pin '.$i.' functions..." > ';?>
+					<?php for($i=1; $i<=$pinsnum;$i++) echo '<input name="pin'.$i.'" class="pins" type="text" size="40" placeholder="pin '.$i.' functions..." > ';?>
 					<input type="hidden" name="partID" value="<?php echo $_POST['partID']; ?>">
 					<input type="hidden" name="partname" value="<?php echo $_POST['partname']; ?>">
 					<input type="hidden" name="newpkg" value="<?php echo $_POST['newpkg']; ?>">
@@ -64,7 +64,7 @@ elseif (isset($_POST['newpkg'])){
 <?php ;}
 else{	//new package selection mask
 	$pkgfound = FALSE;
-	$sqlquery = "SELECT * FROM packages ORDER BY pinsnum ASC";
+	$sqlquery = "SELECT * FROM packages ORDER BY pkgname ASC";
 	$packages = $db -> query($sqlquery);
 	$sqlquery = "SELECT package FROM parts WHERE ID = ".$_GET['partID'];
 	$curpackages = $db -> query($sqlquery);
@@ -77,7 +77,7 @@ else{	//new package selection mask
 					<?php while ($row_packages = $packages -> fetch(PDO::FETCH_ASSOC)){
 						if(!preg_match("/".$row_packages['pkgname']."/", $curpackages)){  
 							$pkgfound = TRUE;?>
-					<option value="<?php echo $row_packages['pkgname'];?>"><?php echo $row_packages['pinsnum'].'pin - '.$row_packages['pkgname'];?></option>
+					<option value="<?php echo $row_packages['pkgname'];?>"><?php echo $row_packages['pkgname'];?></option>
 				<?php ;};}?>
 			</select>
 			<?php if ($pkgfound) {?>
