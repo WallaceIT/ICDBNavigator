@@ -1,4 +1,4 @@
-Copyright © 2012 Francesco Valla
+Copyright © 2012 Francesco Valla, released under MIT license
 
 Rapahel library is © Dmitry Baranovskiy (MIT License), http://raphaeljs.com/
 jQuery library is © jQuery Foundation and other contributors (MIT License), http://jquery.org/
