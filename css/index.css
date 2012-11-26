@@ -66,13 +66,6 @@ table#resultstable{
 	text-align: left;
 	border-collapse: collapse;
 }
-table#categoriestable{
-	font-size: 12px;
-	font-weight: bold;
-	width: 100%;
-	text-align: left;
-	border-collapse: collapse;
-}
 table#resultstable td, table#categoriestable td{
 	padding: 8px 8px 8px 30px;
 	background: #dedede;
@@ -140,9 +133,10 @@ div.tabLink:hover{
 div#tabContainer{
 	clear: both;
 	width: 460px;
-	height: 200px;
+	height: 250px;
 	overflow: auto;
-	padding: 30px 10px 10px 10px;
+	padding: 10px;
 	border: solid 1px #b0b0b0;
+	font-size: 14px;
 	margin: 0px auto;
 }

@@ -32,7 +32,7 @@ else{
 		$noresults = 0;
 		echo $thead;
 		do {?>
-			<tr class="clickme" url="viewpart.php?ID=<?php echo $row_results['ID'] ?>">
+			<tr class="clickme result_part" url="viewpart.php?ID=<?php echo $row_results['ID'] ?>">
 				<td><img src="images/ic_22.png" border="0"/> <?php echo $row_results['name']?> [ <?php echo $row_results['quantity']?> ]</td>
 				<td>
 					<?php echo $row_results['description'].' ['.$row_results['manufacturer'].']'?>
@@ -50,7 +50,7 @@ else{
 		if($noresults) echo $thead;
 		$noresults = 0;
 		do {?>
-			<tr class="clickme" url="data/appnotes/<?php echo $row_results['ID'].'_'.$row_results['name'].'.pdf'; ?>">
+			<tr class="clickme result_part" url="data/appnotes/<?php echo $row_results['ID'].'_'.$row_results['name'].'.pdf'; ?>">
 				<td><img src="images/pdf_22.png" border="0"/> <?php echo $row_results['name'];?></td>
 				<td><?php echo $row_results['description']?></td>
 			</tr>

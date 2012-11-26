@@ -39,7 +39,7 @@
 			});
 		});
 
-		$('#results').on('mousedown', '#resultstable tr', function(event) {
+		$('#results').on('mousedown', '#resultstable tr.result_part', function(event) {
 			var url = $(this).attr("url");
 			switch(event.which)
 		    {
@@ -60,18 +60,17 @@
 				url: "pages/categories.php",
 				data: {category: 'all'},
 				success: function(response){
-					$("#results").html(response).fadeIn('slow');
+					$("#results").html(response).fadeIn();
 				}
 			});
 		});
-		$('#results').on('click', '#categoriestable tr', function() {
-			var cat = $(this).attr("cat");
+		$('#results').on('click', '#resultstable  tr.result_category', function() {
 			$.ajax({
 				type: "POST",
 				url: "pages/categories.php",
-				data: {category: cat},
+				data: {category: $(this).attr("cat")},
 				success: function(response){
-					$("#results").html(response).fadeIn('slow');
+					$("#results").html(response).fadeIn();
 				}
 			});
 		});
@@ -81,7 +80,7 @@
 				url: "pages/search.php",
 				data: {string: '%', all: '1'},
 				success: function(response){
-					$("#results").html(response).fadeIn('slow');
+					$("#results").html(response).fadeIn();
 					$("#resultstitle").html("Parts in the Database:");
 				}
 			});
@@ -92,8 +91,8 @@
 				url: "pages/search.php",
 				data: {string: '%', all: '2'},
 				success: function(response){
-					$("#results").html(response).fadeIn('slow');
-					$("#resultstitle").html("Applications Notes in the Database:");
+					$("#results").html(response).fadeIn();
+					$("#resultstitle").html("Application Notes in the Database:");
 				}
 			});
 		});
@@ -128,7 +127,6 @@
 		//adding part...
 		$( document ).on('submit', '#addpartForm', function(event){
 			event.preventDefault();
-			var datasheetUrl = $(this).find('input[name="addpartDatasheetUrl"]').val();
 			var name = $(this).find('input[name="addpartName"]').val();
 			var pkg = $(this).find('select[name="addpartPackage"]').val();			
 			if($(this).find('input[name="addpartDatasheetUrl"]').val() != ''){

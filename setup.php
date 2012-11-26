@@ -14,7 +14,8 @@
 		$('#tdMySQL').hide();
 		
 		$('.radio_setupDB_Type').change(function(){
-			$('#tdMySQL').slideToggle();
+			if ($('#radio_setupDB_Type_MySQL').is(':checked')) $('#tdMySQL').slideDown();
+			else $('#tdMySQL').slideUp();
 		});
 
 	};
@@ -58,7 +59,7 @@ if(!isset($_POST['gosetup'])){?>
 					<td></td>
 				</tr>
 				<tr>
-					<td><input type="radio" class="radio_setupDB_Type" name="setupDB_Type" value="mysql"> MySQL</td>
+					<td><input type="radio" class="radio_setupDB_Type" id="radio_setupDB_Type_MySQL" name="setupDB_Type" value="mysql"> MySQL</td>
 					<td>
 						<div id="tdMySQL">
 							<input type="text" size="30" name="setupDB_MySQLHost" placeholder="MySQL Hostname"><br>

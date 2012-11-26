@@ -70,8 +70,8 @@ if(!file_exists($datasheethref)) $datasheethref = $row_part["datasheeturl"];
 			var partID = '<?php echo $ID;?>';
 			
 			$.ajaxSetup ({
-			    // Disable caching of AJAX responses
-			    cache: false
+			  	//Disable caching of AJAX responses
+			   	cache: false
 			});
 
 			//loading pins description			
@@ -165,7 +165,6 @@ if(!file_exists($datasheethref)) $datasheethref = $row_part["datasheeturl"];
 			//class .RefreshButton close colorbox and refresh the page
 			$( document ).on('click', '.RefreshButton', function() {
 				$.colorbox.close();
-				$('body').fadeOut(500);
 				parent.location.reload();
 			});
 
@@ -515,7 +514,7 @@ if(!file_exists($datasheethref)) $datasheethref = $row_part["datasheeturl"];
 			?>
 		</div>
 		<div id="myID">
-			[ <?php echo $row_part['category'];?> ] - <i>Inventory #<?php echo $row_part['ID'];?></i>
+			[ <?php echo str_replace('@', ' > ', $row_part['category']);?> ] - <i>Inventory #<?php echo $row_part['ID'];?></i>
 		</div>
 	</div>
 	<div id="qtybox">

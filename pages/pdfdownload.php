@@ -71,8 +71,7 @@ if( isset($_POST['dlID']) ){
 				}
 				fclose($fc);
 			}
-		}
-	
+		}	
 		$ID++;
 		echo $ID;
 	}

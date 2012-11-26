@@ -12,7 +12,7 @@ if(!isset($_POST['addpartName'])){?>
 			$categories = $db -> query("SELECT category FROM categories ORDER BY category ASC");
 			$curcategory = $categories -> fetchColumn();	
 			do{
-				echo '<option value="'.$curcategory.'">'.$curcategory.'</option>';
+				echo '<option value="'.$curcategory.'">'.str_replace('@', ' > ', $curcategory).'</option>';
 			} while ($curcategory = $categories -> fetchColumn())
 			?>
 		</select>

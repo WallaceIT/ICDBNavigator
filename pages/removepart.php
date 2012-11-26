@@ -1,5 +1,5 @@
 <?php if (!isset($_POST['goremove'])){?>
-	<div id="popup_header" class="cAlign">
+	<div id="popup_header">
 		<form id="removepartForm">
 			Are you sure you want to remove <b><?php echo $_POST['partname']?></b> from the DB?
 			<br><br>

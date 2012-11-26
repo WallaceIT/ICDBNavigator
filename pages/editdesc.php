@@ -6,20 +6,18 @@ if(!isset($_POST['newdescription'])){
 	$row_part = $part -> fetch(PDO::FETCH_ASSOC);
 	?>
 	<br>
-	Edit part descriptions
-	<br>
-	<b><?php echo $row_part['name'];?></b>
+	Edit: <b><?php echo $row_part['name'];?></b>
 	<br><br>
 	<input type="text" id="newdescription" size="50" value="<?php echo $row_part['description'];?>">
 	<br>
 	<?php 
-	$sqlquery = "SELECT category FROM categories";
+	$sqlquery = "SELECT category FROM categories ORDER BY category ASC";
 	$cats = $db -> query($sqlquery);
 	echo 'Category: <select id="newcategory">';
 	while($cat = $cats -> fetchColumn()){
 		if($cat == $row_part['category']) $selected = " selected ";	
 		else $selected = "";
-		echo "<option value='$cat'$selected>$cat</option>";
+		echo "<option value='$cat'$selected>".str_replace('@', ' > ', $cat)."</option>";
 	}
 	echo '</select>';
 	?>

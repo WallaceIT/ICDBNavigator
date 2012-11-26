@@ -5,10 +5,6 @@ body {
 }
 
 /* utility classes */
-div.cAlign{
-	text-align: center;
-}
-
 div.hide{
 	display:none;
 }
@@ -170,16 +166,13 @@ div#contents {
 	border: solid 5px #b0b0b0;
 	border-radius: 15px 15px 0 15px;
 	box-shadow: 3px 3px 10px #5D5D5D;
+	font-size: 13px;
 }
 
 div#contents a{
 	color: #464646;
 	font-weight: bold;
 	text-decoration: none;
-}
-
-img#editdesc{
-	cursor:pointer;
 }
 
 /* quantity box */
@@ -257,7 +250,6 @@ table#resultstable tr:hover td{
 	cursor:pointer;
 }
 
-/* part .htm file */
 div.cmain_d{
 	font-size: 15px;
 	font-weight:bold;
@@ -270,13 +262,6 @@ div.cmain_d{
 div.cmain_f{
 	padding: 10px 20px 20px 20px;
 	overflow: auto;
+	font-size: 13x;
 	max-height: 280px;
-}
-
-/* TEST */
-div#package_test{
-	width: 230px;
-	height: 100%;
-	margin: 40px auto;
-	border: solid 1px red;
 }

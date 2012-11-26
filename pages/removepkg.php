@@ -1,5 +1,5 @@
 <?php if (!isset($_POST['goremovepkg'])){?>
-	<div id="popup_header" class="cAlign">
+	<div id="popup_header">
 		<form id="removepkgForm">
 			Are you sure you want to remove <b><?php echo $_POST['toremovepkg']?></b> from <b><?php echo $_POST['partname']?></b>?
 			<br><br>
