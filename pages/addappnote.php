@@ -2,7 +2,6 @@
 include_once('../data/config.php');
 if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 <div id="popup_header">
-<div id="aand">
 	Add new Application Note from web URL...
 	<form action="#" id="addappnoteForm">
 		<input name="addappnoteName" type="text" size="10" placeholder="Name" required>
@@ -48,12 +47,32 @@ if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 	<?php ;} ?>
 	<br><input type="button" class="OkButton" value="Cancel">
 </div>
-</div>
 <script type="text/javascript">
 $( document ).ready(function() {
 
 	var partname = '<?php echo $_POST['partname']?>';
 	var partID = '<?php echo $_POST['partID']?>';
+
+	$( document ).on('submit', '#addappnoteForm', function(event){
+		event.preventDefault();
+		$.colorbox({html:'<div id="popup_header">Downloading Application Note, please wait...</div>'});
+		$.ajax({
+			type: "POST",
+			url: "pages/addappnote.php",
+			data: {
+				name: $(this).find( 'input[name="addappnoteName"]' ).val(),
+				desc: $(this).find( 'input[name="addappnoteDesc"]' ).val(),
+				url: url = $(this).find( 'input[name="addappnoteUrl"]' ).val(),
+				partID: partID
+				},
+			dataType: "text",
+			success: function(response){
+				$.colorbox.close();
+				location.reload(true);
+			}
+		});
+	});
+	
 	<?php if (isset($_POST['datasheeturl'])) echo "var datasheeturl = '$_POST[datasheeturl]';"?>
 	
 	$( document ).on('submit', '#linkappnoteForm', function(event){
