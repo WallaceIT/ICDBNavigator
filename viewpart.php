@@ -2,26 +2,32 @@
 //include config file
 include_once('data/config.php');
 $ID = $_GET['ID'];
-$sqlquery = "SELECT * FROM parts WHERE ID = $ID";
-$part = $db -> query($sqlquery);
+
+$sql = "SELECT * FROM parts WHERE ID = $ID";
+$part = $db -> query($sql);
 $row_part = $part -> fetch(PDO::FETCH_ASSOC);
 
-if(count($row_part['name']) == 0){	//if this part ID does not exist in the DB...
-	
-	// if we are ascending the DB...
-	if(!isset($_GET['d']) || $_GET['d'] == 'a') $ID--;
-	// else if we are descending the DB...
-	elseif($_GET['d'] == 'd'){	
-		$sqlquery = "SELECT MAX(ID) FROM parts"; //retrieve max part ID in the DB
-		$maxID = $db -> query($sqlquery);
-		$maxID = $maxID -> fetchColumn();
-		if ($ID < $maxID) $ID++;
-		else $ID = 1;		
-	}
-	
-	header("Location: $_SERVER[PHP_SELF]?ID=$ID&d=$_GET[d]");
-	
-}
+// find previous/next part IDs
+$sql = "SELECT ID FROM parts WHERE ID < $ID ORDER BY ID DESC LIMIT 0,1";
+$prevID = $db -> query($sql);
+$prevID = $prevID -> fetchColumn();
+if($prevID == NULL) $prevID = $ID;
+
+$sql = "SELECT ID FROM parts WHERE ID > $ID ORDER BY ID ASC LIMIT 0,1";
+$nextID = $db -> query($sql);
+$nextID = $nextID -> fetchColumn();
+if($nextID == NULL) $nextID = $ID;
+
+// find previous/next same category part IDs
+$sql = "SELECT ID FROM parts WHERE ID < $ID AND category = '$row_part[category]' ORDER BY ID DESC LIMIT 0,1";
+$prevcatID = $db -> query($sql);
+$prevcatID = $prevcatID -> fetchColumn();
+if($prevcatID == NULL) $prevcatID = $ID;
+
+$sql = "SELECT ID FROM parts WHERE ID > $ID AND category = '$row_part[category]' ORDER BY ID ASC LIMIT 0,1";
+$nextcatID = $db -> query($sql);
+$nextcatID = $nextcatID -> fetchColumn();
+if($nextcatID == NULL) $nextcatID = $ID;
 
 // correctly size quantity box:
 $numpkgs = 1;	
@@ -475,8 +481,14 @@ if(!file_exists($datasheethref)) $datasheethref = $row_part["datasheeturl"];
 	<div id="toolbar">
 		<a href="index.html"><img src="images/icon.png" class="toolbarobj" title="Main Menu"/></a>
 		<img src="images/search.png" class="toolbarobj" id="searchTool" title="Search"/>
-		<a href="viewpart.php?ID=<?php echo (($row_part['ID']-1 > 0) ? $row_part['ID']-1 : $row_part['ID']);?>&d=a"><img src="images/arrow_left.png" class="toolbarobj" title="Previous Part"/></a>
-		<a href="viewpart.php?ID=<?php echo $row_part['ID']+1 ;?>&d=d"><img src="images/arrow_right.png" class="toolbarobj" title="Next Part"/></a>
+		<div class="toolbarobj" id="toolbarDBarrows">
+			<a href="viewpart.php?ID=<?php echo $prevID;?>"><img src="images/arrow_left.png" class="toolbararrow" title="Previous Part"/></a>
+			<a href="viewpart.php?ID=<?php echo $nextID;?>"><img src="images/arrow_right.png" class="toolbararrow" title="Next Part"/></a>
+		</div>
+		<div class="toolbarobj" id="toolbarCATarrows">
+			<a href="viewpart.php?ID=<?php echo $prevcatID;?>"><img src="images/arrow_left.png" class="toolbararrow" title="Previous Part in Current Category"/></a>
+			<a href="viewpart.php?ID=<?php echo $nextcatID ;?>"><img src="images/arrow_right.png" class="toolbararrow" title="Next Part  in Current Category"/></a>
+		</div>
 		<img src="images/remove.png" class="toolbarobj" id="removepartTool" title="Remove this part"/>
 		<img src="images/pkg_add.png" class="toolbarobj" id="addpkgTool" title="Add a package"/>
 		<img src="images/pkg_edit.png" class="toolbarobj" id="editpkgTool" title="Edit a package"/>
@@ -514,7 +526,10 @@ if(!file_exists($datasheethref)) $datasheethref = $row_part["datasheeturl"];
 			?>
 		</div>
 		<div id="myID">
-			[ <?php echo str_replace('@', ' > ', $row_part['category']);?> ] - <i>Inventory #<?php echo $row_part['ID'];?></i>
+			[
+			<?php echo str_replace('@', ' > ', $row_part['category']);?>
+			]
+			 - <i>Inventory #<?php echo $row_part['ID'];?></i>
 		</div>
 	</div>
 	<div id="qtybox">
