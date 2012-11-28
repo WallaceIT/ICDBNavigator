@@ -51,10 +51,24 @@ div#toolbar{
 	border-right: dashed 1px #b0b0b0;
 }
 
-img.toolbarobj{
+.toolbarobj{
 	max-width: 40px;
 	cursor: pointer;
-	margin-top: 10px;
+	margin: 10px auto 0px auto;
+}
+
+img.toolbararrow{
+	max-width: 20px;
+	cursor: pointer;
+	margin: 0;
+}
+
+div#toolbarDBarrows{
+	background: url(../images/ic_big.png) center center no-repeat;
+}
+
+div#toolbarCATarrows{
+	background: url(../images/categories_big.png) center center no-repeat;
 }
 
 /* package */
