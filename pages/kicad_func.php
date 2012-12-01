@@ -24,8 +24,10 @@ function kicadLIB($name, $packagetype, $pins){
 		// DIP package
 		case "DIP":
 			$plen = 200;	//pin length
-			$height = ($pinno/2 + 1)*100;	//height; 100mils spacing		
-			$width = ((max(array_map('strlen', $pins))*50)*2/100)*100+100;	//width, according to max length of pin descriptions
+			$height = ($pinno/2 + 1)*100;	//height; 100mils spacing
+			if(count($pins)) $maxlenght = max(array_map('strlen', $pins));
+			else return '';				
+			$width = ($maxlenght*100)+100;	//width, according to max length of pin descriptions
 			$left = -$width/2;
 			$top = $height/2;
 			$right = $width/2;
@@ -55,7 +57,8 @@ function kicadLIB($name, $packagetype, $pins){
 		case "QUAD":
 			$plen = 200;
 			// Width for the body according to Pin String
-			$wdiff = max(array_map('strlen', $pins))*50;
+			if(count($pins)) $wdiff = max(array_map('strlen', $pins))*50;
+			else return '';
 			$width = ($wdiff*2)+100*$pinno/4;
 			$height = $width;
 			// Calculate the Co-ordinates

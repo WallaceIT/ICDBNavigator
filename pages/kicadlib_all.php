@@ -15,7 +15,7 @@ do{
 	if(count($pkgs) == 1 && preg_match('/(other)/',$pkgs[0])) continue;
 	for($i=0; $i<count($pkgs);$i++){
 		$curpkg = preg_split("/:/", $pkgs[$i],-1,PREG_SPLIT_NO_EMPTY);
-		if($curpkg[0] == 'other' ){continue;}
+		if($curpkg[0] == 'other' ) continue;
 		elseif(preg_match('/(qf)/',$curpkg[0] )) $packagetype = 'QUAD';
 		else $packagetype = 'DIP';
 		
@@ -39,7 +39,7 @@ do{
 				$pinsblock .= preg_replace( '/\s+/', '', $pinfunc );
 				$pinsblock .= ';';
 				}
-			$file_contents .= kicadLIB($row_part['name'], $packagetype, $pinsblock).PHP_EOL;
+			$file_contents .= kicadLIB($name, $packagetype, $pinsblock).PHP_EOL;
 		}
 	}
 
