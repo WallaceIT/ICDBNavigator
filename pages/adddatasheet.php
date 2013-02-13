@@ -11,6 +11,7 @@ if (isset($_POST['partID'])){
 if($_CONFIG_PDFDOWNLOAD){
 	$dirname = '../data/datasheets/';
 	$filename = $_POST['partname'].'.pdf';
+	
 	$file = fopen($_POST['url'], "rb");
 	if (!$file) return false;
 	else {

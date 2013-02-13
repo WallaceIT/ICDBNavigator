@@ -28,17 +28,18 @@ if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 		</select>
 	<input type="submit" id="addappnoteButton" value="Link!">
 	</form>
-	<?php if (isset($_POST['needdatasheet'])){?>
 	<br>
 	<hr>
-	<br>Add Datasheet to this part:
+	<br>
+	<?php if (isset($_POST['needdatasheet'])) echo 'Add Datasheet to this part:';
+	else echo 'Replace Datasheet for this part:';?>
 	<br>
 	<form action="#" id="adddatasheetForm">
 		<input name="adddatasheetUrl" type="url" size="50" placeholder="URL..." required>
 		<input type="submit" id="adddatasheetButton" value="Add!">
 	</form>
-	<?php ;}
-	elseif(!file_exists("../data/datasheets/$_POST[partname].pdf")){
+	<?php
+	if(!file_exists("../data/datasheets/$_POST[partname].pdf")){
 	?>
 	<br>
 	<hr>
@@ -89,8 +90,6 @@ $( document ).ready(function() {
 		});
 	});
 
-	<?php if (isset($_POST['needdatasheet'])){?>
-
 	$( document ).on('submit', '#adddatasheetForm', function(event){
 		event.preventDefault();
 		var url = $(this).find( 'input[name="adddatasheetUrl"]' ).val();
@@ -107,8 +106,8 @@ $( document ).ready(function() {
 		});
 	});
 
-	<?php ;}
-	elseif (isset($_POST['datasheeturl'])){?>
+	<?php 
+	if (isset($_POST['datasheeturl'])){?>
 	$('#popup_header').on('click', '#downloaddatasheetButton', function(){
 		$.colorbox({html:'<div id="popup_header">Downloading Datasheet, please wait...</div>'});
 		$.ajax({
