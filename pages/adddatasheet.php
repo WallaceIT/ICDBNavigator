@@ -1,4 +1,8 @@
 <?php 
+session_start();
+if(!isset($_SESSION['logged']) || $_SESSION['logged'] != 'OK')
+    return header('HTTP/1.0 401 Unauthorized');
+
 include('../data/config.php');	
 if (isset($_POST['partID'])){
 	include_once('../data/config.php');

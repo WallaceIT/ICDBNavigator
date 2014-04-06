@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!isset($_SESSION['logged']) || $_SESSION['logged'] != 'OK')
+    return header('HTTP/1.0 401 Unauthorized');
+
 include_once('../data/config.php');
 if(isset($_POST['pin1'])){
 	$partfile = "../data/pindescs/".$_POST['partname'].".xml";	

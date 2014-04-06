@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!isset($_SESSION['logged']) || $_SESSION['logged'] != 'OK')
+    return header('HTTP/1.0 401 Unauthorized');
+
 if(!isset($_POST['populate'])){
 	include_once('../data/config.php');
 	$query = "SELECT pinsnum FROM packages WHERE pkgname = '".$_POST['pkg']."'";
@@ -15,7 +19,7 @@ if(!isset($_POST['populate'])){
 				<?php for($i=1; $i<=$pinsnum;$i++) echo '<input name="pin'.$i.'" class="pins" type="text" size="40" placeholder="pin '.$i.' functions..."><br>';?>
 			</div>
 		</div>
-		<input type="hidden" name="partID" value="<?php echo $_POST['partID']; ?>">
+		<!-- <input type="hidden" name="partID" value="<?php echo $_POST['partID']; ?>"> -->
 		<input type="hidden" name="name" value="<?php echo $_POST['name']; ?>">
 		<input type="hidden" name="pkg" value="<?php echo $_POST['pkg']; ?>">
 		<input type="hidden" name="pinsnum" value="<?php echo $pinsnum; ?>">

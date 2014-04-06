@@ -1,5 +1,5 @@
 <?php 
-$pins = array(3,5,15,20);
+$pins = array(3,5,7,15,20);
 for ($j = 0; $j<count($pins); $j++){
 	$pkgname = "to220_".$pins[$j];
 	$file = $packagefolder.$pkgname.".js";

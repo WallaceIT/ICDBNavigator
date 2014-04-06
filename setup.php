@@ -65,7 +65,9 @@ if(!isset($_POST['gosetup'])){?>
 							<input type="text" size="30" name="setupDB_MySQLHost" placeholder="MySQL Hostname"><br>
 							<input type="text" size="30" name="setupDB_MySQLDBName" placeholder="MySQL Database Name"><br>
 							<input type="text" size="30" name="setupDB_MySQLUser" placeholder="MySQL User"><br>
-							<input type="password" size="30" name="setupDB_MySQLPassword" placeholder="MySQL Password">
+							<input type="password" size="30" name="setupDB_MySQLPassword" placeholder="MySQL Password"><br>
+							<br>
+							<input type="checkbox" name="setupDB_MySQLPopulated"> Database is already Populated
 						</div>
 					</td>
 				</tr>
@@ -75,12 +77,17 @@ if(!isset($_POST['gosetup'])){?>
 				</tr>				
 			</table>
 			<hr><br>
-			<b>Path to ICDBNavigator root folder (in the filesystem - I'll try to estimate it):</b><br>
+			<b>Path to ICDBNavigator root folder</b><br>
 			<input type="text" size="60" name="setupRootPath" value="<?php echo $_SERVER['DOCUMENT_ROOT'];?>"><br>
 			<br><hr><br>
 			<b>Other Options:</b>
 			<br><br>
-			<input type="checkbox" name="setupDownloadPdf" value="true"> Download PDF file of Datasheets and Application Notes<br>
+			<input type="checkbox" name="setupDownloadPdf" value="true"> Download Datasheets and Application Notes<br>
+			<br>
+			<input type="checkbox" name="setupMobilePdfOnly" value="true"> Show only the datasheets to mobile (cellphone) users<br>
+			<br><hr><br>
+			<input type="text" name="username" placeholder="Username..."><br>
+			<input type="password" name="password" placeholder="Password...">
 			<br><hr><br>
 			<input type="hidden" name="gosetup" value="TRUE">
 			<div class="center"><input type="submit" value="Install!"></div>
@@ -91,8 +98,8 @@ else{
 	/*	SETUP:
 	 *  - creates data directory
 	 *  - creates config.php file  
-	 *  - creates new database and setup it
-	 *  - create data subdirectories...
+	 *  - creates the database
+	 *  - creates data subdirectories
 	 *  - creates default packages
 	 *  - all DONE! :) 
 	 * 
@@ -123,10 +130,16 @@ else{
 		);'.PHP_EOL.'$_CONFIG_DB_USE_SQLITE = FALSE;'.PHP_EOL;
 	}
 	$file_contents .= '// config'.PHP_EOL.PHP_EOL;
-	$file_contents .= '/* $_CONFIG_PDFDOWNLOAD: TRUE to download datasheets and appnotes and save their URLs in the DB, FALSE to only save URLs in the DB*/'.PHP_EOL;
+	$file_contents .= '/* $_CONFIG_PDFDOWNLOAD: TRUE to download datasheets and appnotes and save their URLs in the DB, FALSE to only save URLs in the DB */'.PHP_EOL;
 	
 	if(isset($_POST['setupDownloadPdf'])) $file_contents .= '$_CONFIG_PDFDOWNLOAD = TRUE;'.PHP_EOL;
 	else $file_contents .= '$_CONFIG_PDFDOWNLOAD = FALSE;'.PHP_EOL;
+
+	$file_contents .= '/* /* $_CONFIG_MOBILE_DATASHEET_ONLY: view only datasheet for the selected part on mobile */'.PHP_EOL;
+
+	if(isset($_POST['setupMobilePdfOnly'])) $file_contents .= '$_CONFIG_MOBILE_DATASHEET_ONLY = TRUE;'.PHP_EOL;
+	else $file_contents .= '$_CONFIG_MOBILE_DATASHEET_ONLY = FALSE;'.PHP_EOL;
+
 	$file_contents .= '?>';
 	
 	file_put_contents('data/config.php', $file_contents);
@@ -139,43 +152,59 @@ else{
 	
 	if(!$db) exit('<b>[FAILED!]</b>');
 	
-	// table 'appnotes'
-	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "appnotes" ("ID" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "name" TEXT NOT NULL , "description" TEXT NOT NULL , "url" TEXT)';
-	else $sql = 'CREATE TABLE appnotes (ID INTEGER PRIMARY KEY  AUTO_INCREMENT  NOT NULL  UNIQUE , name TEXT NOT NULL , description TEXT NOT NULL , url TEXT)';
-	$st = $db -> prepare($sql);
-	$st -> execute();
+	if($_CONFIG_DB_USE_SQLITE || !isset($_POST["setupDB_MySQLPopulated"])){
 	
-	// table 'categories'
-	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "categories" ("category" TEXT NOT NULL  UNIQUE )';
-	else $sql = 'CREATE TABLE categories (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, category TEXT NOT NULL)';
-	$st = $db -> prepare($sql);
-	$st -> execute();
-	$sql = "INSERT INTO categories (category) VALUES ('Miscellaneous')";
-	$st = $db -> prepare($sql);
-	$st -> execute();
-	
-	// table 'manufacturers'
-	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "manufacturers" ("name" TEXT NOT NULL  UNIQUE , "website" TEXT)';
-	else $sql = 'CREATE TABLE manufacturers (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, name TEXT NOT NULL, website TEXT)';
-	$st = $db -> prepare($sql);
-	$st -> execute();
-	$sql = "INSERT INTO manufacturers (name) VALUES ('Various')";
-	$st = $db -> prepare($sql);
-	$st -> execute();
-	
-	// table 'packages'
-	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "packages" ("pkgname" TEXT NOT NULL ,"pinsnum" INTEGER NOT NULL )';
-	else $sql = 'CREATE TABLE packages (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, pkgname TEXT NOT NULL, pinsnum INTEGER NOT NULL )';
-	$st = $db -> prepare($sql);
-	$st -> execute();
-	
-	// table 'parts'
-	if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "parts" ("ID" INTEGER PRIMARY KEY  NOT NULL ,"name" TEXT NOT NULL ,"description" TEXT NOT NULL ,"manufacturer" TEXT NOT NULL ,"category" TEXT NOT NULL ,"appnotes" TEXT,"datasheeturl" TEXT,"package" TEXT NOT NULL ,"quantity" INTEGER NOT NULL ,"summary" TEXT)';
-	else $sql = 'CREATE TABLE parts (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, name TEXT NOT NULL ,description TEXT NOT NULL ,manufacturer TEXT NOT NULL ,category TEXT NOT NULL ,appnotes TEXT,datasheeturl TEXT,package TEXT NOT NULL ,quantity INTEGER NOT NULL ,summary TEXT)';
-	$st = $db -> prepare($sql);
-	$st -> execute();
-	
-	echo '[OK]<br><br>';
+		// table 'appnotes'
+		if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "appnotes" ("ID" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "name" TEXT NOT NULL , "description" TEXT NOT NULL , "url" TEXT)';
+		else $sql = 'CREATE TABLE appnotes (ID INTEGER PRIMARY KEY  AUTO_INCREMENT  NOT NULL  UNIQUE , name TEXT NOT NULL , description TEXT NOT NULL , url TEXT)';
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		
+		// table 'categories'
+		if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "categories" ("category" TEXT NOT NULL  UNIQUE )';
+		else $sql = 'CREATE TABLE categories (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, category TEXT NOT NULL)';
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		$sql = "INSERT INTO categories (category) VALUES ('Miscellaneous')";
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		
+		// table 'manufacturers'
+		if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "manufacturers" ("name" TEXT NOT NULL  UNIQUE , "website" TEXT)';
+		else $sql = 'CREATE TABLE manufacturers (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, name TEXT NOT NULL, website TEXT)';
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		$sql = "INSERT INTO manufacturers (name) VALUES ('Various')";
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		
+		// table 'packages'
+		if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "packages" ("pkgname" TEXT NOT NULL ,"pinsnum" INTEGER NOT NULL )';
+		else $sql = 'CREATE TABLE packages (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, pkgname TEXT NOT NULL, pinsnum INTEGER NOT NULL )';
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		
+		// table 'parts'
+		if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "parts" ("ID" INTEGER PRIMARY KEY  NOT NULL ,"name" TEXT NOT NULL ,"description" TEXT NOT NULL ,"manufacturer" TEXT NOT NULL ,"category" TEXT NOT NULL ,"appnotes" TEXT,"datasheeturl" TEXT,"package" TEXT NOT NULL ,"quantity" INTEGER NOT NULL ,"summary" TEXT)';
+		else $sql = 'CREATE TABLE parts (ID INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE, name TEXT NOT NULL ,description TEXT NOT NULL ,manufacturer TEXT NOT NULL ,category TEXT NOT NULL ,appnotes TEXT,datasheeturl TEXT,package TEXT NOT NULL ,quantity INTEGER NOT NULL ,summary TEXT)';
+		$st = $db -> prepare($sql);
+		$st -> execute();
+
+		// table 'login'
+		if($_CONFIG_DB_USE_SQLITE) $sql = 'CREATE TABLE "login" ("ID" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "username" TEXT NOT NULL  UNIQUE , "password" TEXT NOT NULL )';
+		else $sql = 'CREATE TABLE login (ID INTEGER PRIMARY KEY  AUTO_INCREMENT  NOT NULL  UNIQUE , username TEXT NOT NULL  UNIQUE , password TEXT NOT NULL )';
+		$st = $db -> prepare($sql);
+		$st -> execute();
+		$username = hash('sha224', $_POST['username']);
+    		$password = hash('sha224', $_POST['password']); 
+		$sql = "INSERT INTO login (username,password) VALUES ('$username','$password')";
+		$st = $db -> prepare($sql);
+		$st -> execute();
+
+		
+		echo '[OK]<br><br>';
+	}
+	else echo 'Database already Existent and Populated, skipping creation...<br><br>';
 	
 	// creating data subdirectories...
 	echo 'creating data subdirectories...';

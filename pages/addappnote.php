@@ -1,5 +1,10 @@
 <?php
+session_start();
+if(!isset($_SESSION['logged']) || $_SESSION['logged'] != 'OK')
+    return header('HTTP/1.0 401 Unauthorized');
+
 include_once('../data/config.php');
+
 if (!isset($_POST['url']) && !isset($_POST['appnoteID'])){?>
 <div id="popup_header">
 	Add new Application Note from web URL...

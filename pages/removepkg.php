@@ -1,4 +1,9 @@
-<?php if (!isset($_POST['goremovepkg'])){?>
+<?php
+session_start();
+if(!isset($_SESSION['logged']) || $_SESSION['logged'] != 'OK')
+    return header('HTTP/1.0 401 Unauthorized');
+
+if (!isset($_POST['goremovepkg'])){?>
 	<div id="popup_header">
 		<form id="removepkgForm">
 			Are you sure you want to remove <b><?php echo $_POST['toremovepkg']?></b> from <b><?php echo $_POST['partname']?></b>?

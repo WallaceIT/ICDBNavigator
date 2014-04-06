@@ -76,7 +76,7 @@ elseif ($_POST['action'] == 'restore'){
 			rrmdir('../data/');
 			$zip->extractTo('..');
 			$zip->close();
-			header("location: ../index.html"); 
+			header("location: ../index.php"); 
 			
 		}
 		else echo 'Backup restoring failed - can\'t open uploaded zip file! :(';

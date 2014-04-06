@@ -1,4 +1,9 @@
-<?php if (!isset($_POST['goremove'])){?>
+<?php
+session_start();
+if(!isset($_SESSION['logged']) || $_SESSION['logged'] != 'OK')
+    return header('HTTP/1.0 401 Unauthorized');
+
+if (!isset($_POST['goremove'])){?>
 	<div id="popup_header">
 		<form id="removepartForm">
 			Are you sure you want to remove <b><?php echo $_POST['partname']?></b> from the DB?
@@ -36,6 +41,6 @@
 	$datasheetfile = "../data/datasheets/".$_POST['partname'].".pdf";
 	if (file_exists($datasheetfile)) unlink($datasheetfile);
 	echo '<div id="popup_header"><b>'.$_POST['partname'].'</b> removed from the DB!<br><br>
-			<form action="index.html"><input type="submit" value="Ok"></form></div>';
+			<form action="index.php"><input type="submit" value="Ok"></form></div>';
 }
 ?>	

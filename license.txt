@@ -5,6 +5,8 @@ jQuery library is © jQuery Foundation and other contributors (MIT License), htt
 CLEditor is © Chris Landowski (MIT License), http://premiumsoftware.net/cleditor/
 Colorbox is © Jack Moore (MIT License), http://www.jacklmoore.com/colorbox
 qTip is © Craig Thompson (MIT License), http://craigsworks.com/projects/qtip/
+Qrcodesvg is © Vincent Pellé (GPL License), https://github.com/pinchtools/qrcodesvg
+Raphael.Export plugin is © Elbert Alias (MIT License), https://github.com/ElbertF/Raphael.Export
 
 kicadlib.php is a port of libgen, © Abhijit Bose, A.D.H.A.R Labs Research (CC BY-NC-SA 3.0 License), https://github.com/AdharLabs/Kicad-tools/tree/master/libgen
 images are from Faenza icon set (© tiheum - GNU/GPL License - http://tiheum.deviantart.com/art/Faenza-Icons-173323228) or from openclipart.org (Public Domain)

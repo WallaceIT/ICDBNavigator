@@ -9,9 +9,16 @@ div.hide{
 	display:none;
 }
 
+#login{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 div#logo{
-	width: 500px;
+	width: 50%;
 	margin: 10px auto 0 auto;
+	text-align: center;
 	font-size: 40px;
 }
 div#searchbox{
@@ -50,7 +57,7 @@ div#resultstitle{
 	text-align: center;
 }
 div#results_inner{
-	max-height: 350px;
+	max-height: 300px;
 	overflow: auto;
 }
 div#noresults{
@@ -112,6 +119,9 @@ div#message{
 	text-align: center;
 	padding: 10px;
 	height: 45px;
+}
+div#loginform{
+    padding: 20px;
 }
 /* utilities */
 div#tabHeader{

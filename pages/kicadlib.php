@@ -9,7 +9,7 @@ $sqlquery = "SELECT * FROM parts WHERE ID =".$_GET['partID'];
 $part = $db -> query($sqlquery);
 $row_part = $part -> fetch(PDO::FETCH_ASSOC);
 
-if(preg_match('/(qf)/',$_GET['pkg'] )) $packagetype = 'QUAD';
+if(preg_match('/(qf)/',$_GET['pkg'] )) $packagetype = 'DIP';
 else $packagetype = 'DIP';
 
 $partfile = "../data/pindescs/".$row_part['name'].".xml";
