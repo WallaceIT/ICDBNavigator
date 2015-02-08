@@ -231,7 +231,7 @@ else{
 	echo '[OK]<br><br>';
 
 	echo '<div class="center"><b>ICDBNavigator Installed!</b><br>(Please remove this file...)</div>';
-	echo '<br><div class="center"><a href="index.html">Go to ICDBN Homepage</a></div>';
+	echo '<br><div class="center"><a href="index.php">Go to ICDBN Homepage</a></div>';
 	
 }
 ?>
